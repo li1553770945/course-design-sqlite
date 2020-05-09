@@ -26,14 +26,20 @@
     <Filter Include="Header Files\GUI">
       <UniqueIdentifier>{a028087a-300d-4280-9dbc-d7d16b9817de}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\library">
-      <UniqueIdentifier>{77cbf101-0fa9-4a45-aab3-4cebd8cb8fb5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\GUI">
       <UniqueIdentifier>{0200522d-b7e6-49db-b20d-da77f1631409}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\library">
-      <UniqueIdentifier>{ffb56bb0-f42f-4b07-81d6-eaeebe6452f7}</UniqueIdentifier>
+    <Filter Include="Header Files\model">
+      <UniqueIdentifier>{a6a4047e-3728-4f32-a186-6c443fc9244d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\model">
+      <UniqueIdentifier>{6b07bebb-0a85-45d3-8c54-29900b958343}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\library">
+      <UniqueIdentifier>{08a77813-8a7a-46c0-a67a-247f0c518551}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\book_data">
+      <UniqueIdentifier>{2f62b892-e863-4c92-ae63-9ae3ffaa6bf5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -63,31 +69,37 @@
     <QtMoc Include="GUIh\AboutWindow.h">
       <Filter>Header Files\GUI</Filter>
     </QtMoc>
-    <QtMoc Include="GUIh\BookInfoWindow.h">
-      <Filter>Header Files\GUI</Filter>
-    </QtMoc>
-    <QtMoc Include="GUIh\FindWindow.h">
-      <Filter>Header Files\GUI</Filter>
-    </QtMoc>
     <QtMoc Include="GUIh\MainWindow.h">
-      <Filter>Header Files\GUI</Filter>
-    </QtMoc>
-    <QtMoc Include="GUIh\ManageWindow.h">
       <Filter>Header Files\GUI</Filter>
     </QtMoc>
     <QtMoc Include="GUIh\ReportWindow.h">
       <Filter>Header Files\GUI</Filter>
     </QtMoc>
-    <QtMoc Include="GUIh\SaleWindow.h">
+    <QtMoc Include="GUIh\ManageWindow.h">
       <Filter>Header Files\GUI</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="h\library.h">
-      <Filter>Header Files\library</Filter>
-    </ClInclude>
     <ClInclude Include="h\global.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model_h\sqlite.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="model_h\books.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIh\BookInfoWindow.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIh\FindWindow.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIh\SaleWindow.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="h\library.h">
+      <Filter>Header Files\library</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -112,26 +124,23 @@
     <ClCompile Include="GUIcpp\SaleWindow.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\BookData.cpp">
-      <Filter>Source Files\library</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\Management.cpp">
-      <Filter>Source Files\library</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\Report.cpp">
-      <Filter>Source Files\library</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\Sale.cpp">
-      <Filter>Source Files\library</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\TitleInfo.cpp">
-      <Filter>Source Files\library</Filter>
-    </ClCompile>
     <ClCompile Include="cpp\global.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cpp\main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model_cpp\sqlite.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="model_cpp\books.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\BookData.cpp">
+      <Filter>Source Files\book_data</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\TitleInfo.cpp">
+      <Filter>Source Files\book_data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

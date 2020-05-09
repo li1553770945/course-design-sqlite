@@ -23,10 +23,10 @@
     <QtMoc Include="GUIh\AboutWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="GUIh\BookInfoWindow.h" />
+    <ClInclude Include="GUIh\BookInfoWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="GUIh\FindWindow.h" />
+    <ClInclude Include="GUIh\FindWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="GUIh\MainWindow.h" />
@@ -38,19 +38,18 @@
     <QtMoc Include="GUIh\ReportWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="GUIh\SaleWindow.h" />
+    <ClInclude Include="GUIh\SaleWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="h\global.h" />
     <ClInclude Include="h\library.h" />
+    <ClInclude Include="model_h\books.h" />
+    <ClInclude Include="model_h\sqlite.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\BookData.cpp" />
     <ClCompile Include="cpp\global.cpp" />
     <ClCompile Include="cpp\main.cpp" />
-    <ClCompile Include="cpp\Management.cpp" />
-    <ClCompile Include="cpp\Report.cpp" />
-    <ClCompile Include="cpp\Sale.cpp" />
     <ClCompile Include="cpp\TitleInfo.cpp" />
     <ClCompile Include="GUIcpp\AboutWindow.cpp" />
     <ClCompile Include="GUIcpp\BookInfoWindow.cpp" />
@@ -59,6 +58,8 @@
     <ClCompile Include="GUIcpp\ManageWindow.cpp" />
     <ClCompile Include="GUIcpp\ReportWindow.cpp" />
     <ClCompile Include="GUIcpp\SaleWindow.cpp" />
+    <ClCompile Include="model_cpp\books.cpp" />
+    <ClCompile Include="model_cpp\sqlite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="qrc\About.qrc" />

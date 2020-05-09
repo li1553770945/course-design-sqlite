@@ -140,7 +140,7 @@
          <string>书名</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -217,113 +217,6 @@
       </item>
      </layout>
     </item>
-    <item row="2" column="0" colspan="3">
-     <widget class="QTableWidget" name="Table">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="editTriggers">
-       <set>QAbstractItemView::NoEditTriggers</set>
-      </property>
-      <property name="dragEnabled">
-       <bool>true</bool>
-      </property>
-      <property name="selectionMode">
-       <enum>QAbstractItemView::ExtendedSelection</enum>
-      </property>
-      <property name="selectionBehavior">
-       <enum>QAbstractItemView::SelectRows</enum>
-      </property>
-      <property name="textElideMode">
-       <enum>Qt::ElideNone</enum>
-      </property>
-      <property name="sortingEnabled">
-       <bool>false</bool>
-      </property>
-      <attribute name="horizontalHeaderVisible">
-       <bool>true</bool>
-      </attribute>
-      <attribute name="horizontalHeaderCascadingSectionResizes">
-       <bool>true</bool>
-      </attribute>
-      <attribute name="horizontalHeaderStretchLastSection">
-       <bool>false</bool>
-      </attribute>
-      <column>
-       <property name="text">
-        <string>书名</string>
-       </property>
-       <property name="textAlignment">
-        <set>AlignCenter</set>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>ISBN</string>
-       </property>
-       <property name="textAlignment">
-        <set>AlignCenter</set>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>作者</string>
-       </property>
-       <property name="textAlignment">
-        <set>AlignCenter</set>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>出版社</string>
-       </property>
-       <property name="textAlignment">
-        <set>AlignCenter</set>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>进货日期</string>
-       </property>
-       <property name="textAlignment">
-        <set>AlignCenter</set>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>库存</string>
-       </property>
-       <property name="textAlignment">
-        <set>AlignCenter</set>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>零售价</string>
-       </property>
-       <property name="textAlignment">
-        <set>AlignCenter</set>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>批发价</string>
-       </property>
-       <property name="textAlignment">
-        <set>AlignCenter</set>
-       </property>
-      </column>
-     </widget>
-    </item>
     <item row="3" column="0">
      <spacer name="horizontalSpacer_2">
       <property name="orientation">
@@ -390,6 +283,49 @@
        </widget>
       </item>
      </layout>
+    </item>
+    <item row="2" column="0" colspan="3">
+     <widget class="QTableView" name="Table">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="dragEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::ExtendedSelection</enum>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="textElideMode">
+       <enum>Qt::ElideNone</enum>
+      </property>
+      <property name="sortingEnabled">
+       <bool>false</bool>
+      </property>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>25</number>
+      </attribute>
+      <attribute name="horizontalHeaderHighlightSections">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderCascadingSectionResizes">
+       <bool>false</bool>
+      </attribute>
+     </widget>
     </item>
    </layout>
   </widget>

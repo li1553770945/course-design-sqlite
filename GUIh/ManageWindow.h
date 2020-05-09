@@ -12,8 +12,6 @@ public:
 private:
 	Ui::ManageWindowClass ui;
 	void closeEvent(QCloseEvent* event);
-	BookData*  current_edit_book;
-	BooksIt current_it;
 private slots:
 	void on_ButtonAdd_clicked();
 	void on_ButtonISBNConfirm_clicked();
