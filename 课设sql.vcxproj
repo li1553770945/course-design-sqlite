@@ -38,7 +38,7 @@
     <QtMoc Include="GUIh\ReportWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GUIh\SaleWindow.h" />
+    <QtMoc Include="GUIh\SaleWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="h\global.h" />

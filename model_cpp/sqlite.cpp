@@ -30,7 +30,7 @@ bool Sqlite::CreateBooksTable()
         qDebug() << _database.lastError();
         return false;
     }
-    if (!sql_query.exec("CREATE INDEX books_isbn_IDX ON books (isbn);"))
+    if (!sql_query.exec("CREATE UNIQUE INDEX books_isbn_IDX ON books (isbn);"))
     {
         qDebug() << "ÉèÖÃÖ÷¼ü³ö´í£¡";
         qDebug() << _database.lastError();

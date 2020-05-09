@@ -78,6 +78,9 @@
     <QtMoc Include="GUIh\ManageWindow.h">
       <Filter>Header Files\GUI</Filter>
     </QtMoc>
+    <QtMoc Include="GUIh\SaleWindow.h">
+      <Filter>Header Files\GUI</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="h\global.h">
@@ -93,9 +96,6 @@
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="GUIh\FindWindow.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="GUIh\SaleWindow.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="h\library.h">

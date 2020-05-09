@@ -1,24 +1,20 @@
-//#include "../GUIh/SaleWindow.h"
-//#include <qevent.h>
-//#include <qmessagebox.h>
-//#include "../h/library.h"
-//#include "../h/global.h"
-//#include "../GUIh//BookInfoWindow.h"
-//#include "../GUIh/ReportWindow.h"
-//#include "../GUIh/FindWindow.h"
-//# pragma execution_character_set("utf-8")
-//SaleWindow::SaleWindow(QWidget* parent)
-//	: QMainWindow(parent)
-//{
-//	this->setAttribute(Qt::WA_DeleteOnClose);
-//	ui.setupUi(this);
-//	ui.Fax->setText(QString::number(Sale::GetFax(), 10, 2));
-//	select = false;
-//	find_window = NULL;
-//	report_window = NULL;
-//	ui.TableCart->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-//	ui.TableCart->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-//}
+#include "../GUIh/SaleWindow.h"
+#include <qevent.h>
+#include <qmessagebox.h>
+#include "../h/library.h"
+#include "../h/global.h"
+#include "../GUIh/ReportWindow.h"
+# pragma execution_character_set("utf-8")
+double SaleWindow::_fax=0.06;
+SaleWindow::SaleWindow(QWidget* parent)
+	: QMainWindow(parent)
+{
+	this->setAttribute(Qt::WA_DeleteOnClose);
+	ui.setupUi(this);
+	ui.Fax->setText(QString::number(SaleWindow::_fax, 10, 2));
+	ui.TableCart->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+	ui.TableCart->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+}
 //void SaleWindow::on_Confirm_clicked()
 //{
 //	BooksIt it;
