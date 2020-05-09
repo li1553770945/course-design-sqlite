@@ -79,7 +79,25 @@ void ReportWindow::on_ButtonFlush_clicked()
 }
 void ReportWindow::SetData()
 {
-	
+	int column = 1;
+	if (ui.RadioName->isChecked())
+		column = 1;
+	if (ui.RadioDateAdded->isChecked())
+		column = 5;
+	if (ui.RadioQty->isChecked())
+		column = 6;
+	if (ui.RadioRetail->isChecked())
+		column = 7;
+	if (ui.RadioWholesale->isChecked())
+		column = 8;
+	if (ui.RadioPositive->isChecked())
+	{
+		books->setSort(column, Qt::AscendingOrder); //升序排列
+	}
+	else
+	{
+		books->setSort(column, Qt::DescendingOrder); //降序排列
+	}
 	books->select();
 	ui.Table->setColumnHidden(0, true);
 }
@@ -141,24 +159,5 @@ void ReportWindow::SetData()
 //}
 void ReportWindow::on_ButtonSortConfirm_clicked()
 {
-	int column = 1;
-	if (ui.RadioName->isChecked())
-		column = 1;
-	if (ui.RadioDateAdded->isChecked())
-		column = 5;
-	if (ui.RadioQty->isChecked())
-		column = 6;
-	if (ui.RadioRetail->isChecked())
-		column = 7;
-	if (ui.RadioWholesale->isChecked())
-		column = 8;
-	if (ui.RadioPositive->isChecked())
-	{
-		books->setSort(column, Qt::AscendingOrder); //id属性，即第0列，升序排列
-	}
-	else
-	{
-		books->setSort(column, Qt::DescendingOrder); //id属性，即第0列，降序排
-	}
 	SetData();
 }

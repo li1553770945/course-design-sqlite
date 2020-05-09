@@ -57,7 +57,7 @@ BookOpe::Result BookOpe::Delete(string &isbn)
 int  BookOpe::QueryRow(string& isbn)
 {
     QSqlQuery query;
-    query.exec("SELECT * FROM books WHERE isbn=" + QString::fromStdString(isbn) + ";");
+    query.exec("SELECT id FROM books WHERE isbn=" + QString::fromStdString(isbn) + ";");
     query.last();
     if (query.isValid())
     {
@@ -71,7 +71,8 @@ int  BookOpe::QueryRow(string& isbn)
 QSqlRecord BookOpe::Query(string& isbn)
 {
     QSqlQuery query(Sqlite::_database);
-    query.exec("SELECT * FROM books WHERE isbn=" + QString::fromStdString(isbn) + ";");
+    query.exec("SELECT * FROM books WHERE isbn=" + QString::fromStdString(isbn));
+    qDebug() << "SELECT * FROM books WHERE isbn = " + QString::fromStdString(isbn) ;
     query.first();
     return query.record();
 }

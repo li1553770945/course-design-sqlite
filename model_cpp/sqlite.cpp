@@ -24,7 +24,16 @@ bool Sqlite::Open()
 bool Sqlite::CreateBooksTable()
 {
     QSqlQuery sql_query;
-    if (!sql_query.exec("create table books(id int primary key  , name text, isbn text , author text,publisher text,date_added text,qty integer,retail real,wholesale real)"))
+    if (!sql_query.exec("CREATE TABLE books(id INTEGER PRIMARY KEY   AUTOINCREMENT,"
+        "name TEXT,"
+        "isbn TEXT,"
+        "author TEXT,"
+        "publisher TEXT,"
+        "date_added TEXT,"
+        "qty INT,"
+        "retail REAL,"
+        "wholesale REAL)"))
+
     {
         qDebug() << "创建数据表出错！";
         qDebug() << _database.lastError();
@@ -32,7 +41,7 @@ bool Sqlite::CreateBooksTable()
     }
     if (!sql_query.exec("CREATE UNIQUE INDEX books_isbn_IDX ON books (isbn);"))
     {
-        qDebug() << "设置主键出错！";
+        qDebug() << "设置索引出错！";
         qDebug() << _database.lastError();
         return false;
     }

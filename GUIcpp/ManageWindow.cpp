@@ -11,7 +11,7 @@ ManageWindow::ManageWindow(QWidget* parent) :QMainWindow(parent)
 {
 	ui.setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
-	ui.LineEditFax->setText(QString::number(SaleWindow::_fax, 10, 2));
+	ui.LineEditFax->setText(QString::number(SaleModel::GetFax(), 10, 2));
 }
 void ManageWindow::closeEvent(QCloseEvent* event)
 {
@@ -171,7 +171,7 @@ void ManageWindow::on_ButtonFaxConfirm_clicked()
 	}
 	else
 	{
-		SaleWindow::_fax = fax;
+		SaleModel::SetFax(fax);
 		QMessageBox box(QMessageBox::Information, "提示", "设置成功！");
 		box.exec();
 	}
