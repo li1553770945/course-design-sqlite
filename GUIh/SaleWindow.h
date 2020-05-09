@@ -20,9 +20,9 @@ signals:
 	void Close(std::string);
 
 private:
-	//Sale _sale_;
+	
 	Ui::SaleWindowClass ui;
-	//void closeEvent(QCloseEvent* event);
+	void closeEvent(QCloseEvent* event);
 	//bool select;
 	//void Select(bool);
 	//ReportWindow* report_window;

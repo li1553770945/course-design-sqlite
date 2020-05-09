@@ -11,6 +11,7 @@ ManageWindow::ManageWindow(QWidget* parent) :QMainWindow(parent)
 {
 	ui.setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
+	ui.LineEditFax->setText(QString::number(SaleWindow::_fax, 10, 2));
 }
 void ManageWindow::closeEvent(QCloseEvent* event)
 {
@@ -147,7 +148,6 @@ void ManageWindow::on_ButtonSave_clicked()
 	sql = sql + ",retail =" + QString::number(book.GetRetail(),10,2);
 	sql = sql + ",wholesale =" + QString::number(book.GetWholesale(),10,2);
 	sql = sql + " WHERE isbn=" + _q_result.value("isbn").toString();
-	qDebug() << sql;
 	if (query.exec(sql))
 	{
 		QMessageBox box(QMessageBox::Information, "提示", "修改成功！");
@@ -163,7 +163,7 @@ void ManageWindow::on_ButtonSave_clicked()
 void ManageWindow::on_ButtonFaxConfirm_clicked()
 {
 	QByteArray ba = ui.LineEditFax->text().toLocal8Bit();
-	int fax = my_atof(ba.data());
+	double fax = my_atof(ba.data());
 	if (fax < 0)
 	{
 		QMessageBox box(QMessageBox::Critical, "提示", "设置失败！税率只能是不小于0的小数！");

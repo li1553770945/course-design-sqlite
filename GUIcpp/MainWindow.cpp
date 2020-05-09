@@ -15,7 +15,7 @@
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
-	//sale_window=NULL;
+	sale_window=NULL;
 	manage_window = NULL;
 	report_window=NULL;
 	LoadFile();
@@ -56,35 +56,35 @@ void MainWindow::LoadFile()
 }
 void MainWindow::on_ButtonSale_clicked()
 {
-	//if (manage_window != NULL)//为了防止收银的同时进行修改，规定收银和管理窗口智能同时打开一个
-	//{
-	//	QMessageBox box(QMessageBox::Information, "提示", "请先关闭管理窗口！");
-	//	box.exec();
-	//	return;
-	//}
-	//if (sale_window == NULL)//如果为空，说明还没有打开过这个窗口，那么就新建一个并显示
-	//{
-	//	
-	//	//sale_window = new SaleWindow(this);
-	//	connect(sale_window, SIGNAL(Close(std::string)), this, SLOT(CloseSon(std::string)));
-	//	sale_window->show();
-	//	
-	//}
-	//else//如果已经打开了，不再重新创建，而是显示原来的
-	//{
-	//	sale_window->showNormal();
-	//	sale_window->activateWindow();
+	if (manage_window != NULL)//为了防止收银的同时进行修改，规定收银和管理窗口智能同时打开一个
+	{
+		QMessageBox box(QMessageBox::Information, "提示", "请先关闭管理窗口！");
+		box.exec();
+		return;
+	}
+	if (sale_window == NULL)//如果为空，说明还没有打开过这个窗口，那么就新建一个并显示
+	{
+		
+		sale_window = new SaleWindow(this);
+		connect(sale_window, SIGNAL(Close(std::string)), this, SLOT(CloseSon(std::string)));
+		sale_window->show();
+		
+	}
+	else//如果已经打开了，不再重新创建，而是显示原来的
+	{
+		sale_window->showNormal();
+		sale_window->activateWindow();
 
-	//}
+	}
 }
 void MainWindow::on_ButtonManage_clicked()
 {
-	//if (sale_window != NULL)
-	//{
-	//	QMessageBox box(QMessageBox::Information, "提示", "请先关闭收银窗口！");
-	//	box.exec();
-	//	return;
-	//}
+	if (sale_window != NULL)
+	{
+		QMessageBox box(QMessageBox::Information, "提示", "请先关闭收银窗口！");
+		box.exec();
+		return;
+	}
 	if (manage_window == NULL)
 	{
 
@@ -119,13 +119,13 @@ void MainWindow::on_ButtonExit_clicked()
 }
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-	/*if (manage_window != NULL || sale_window != NULL || report_window != NULL)
+	if (manage_window != NULL || sale_window != NULL || report_window != NULL)
 	{
 		QMessageBox box(QMessageBox::Warning, "错误", "请先关闭已打开的子窗口！");
 		box.exec();
 		event->ignore();
 		return;
-	}*/
+	}
 	QMessageBox messageBox(QMessageBox::Warning, "警告", "您确定要退出吗?", QMessageBox::Yes | QMessageBox::No, NULL);
 	switch (messageBox.exec())
 	{
@@ -143,7 +143,7 @@ void MainWindow::CloseSon(std::string name)
 {
 	if (name == "sale")
 	{
-		//sale_window = NULL;
+		sale_window = NULL;
 	}
 	else if (name == "manage")
 	{

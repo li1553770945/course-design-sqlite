@@ -30,8 +30,8 @@ private slots:
 	void on_ButtonFlush_clicked();
 	/*void on_ButtonPreviousPage_clicked();
 	void on_ButtonNextPage_clicked();
-	void on_LineEditPage_returnPressed();
-	void on_ButtonSortConfirm_clicked();*/
+	void on_LineEditPage_returnPressed();*/
+	void on_ButtonSortConfirm_clicked();
 signals:
 	void Close(std::string);
 };
