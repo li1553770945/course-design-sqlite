@@ -72,7 +72,6 @@ QSqlRecord BookOpe::Query(string& isbn)
 {
     QSqlQuery query(Sqlite::_database);
     QString sql = "SELECT * FROM books WHERE isbn='" + QString::fromStdString(isbn)+"'";
-    qDebug() << sql;
     query.exec(sql);
     query.first();
     return query.record();

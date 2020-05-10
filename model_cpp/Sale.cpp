@@ -101,7 +101,6 @@ bool SaleModel::Sattle()
 		QString sql;
 		int num = item(i, 2)->data(0).toInt() - item(i, 4)->data(0).toInt();
 		sql = sql + "UPDATE books  SET qty="+QString::number(num)+" where isbn=" + item(i, 0)->data(0).toString();
-		qDebug() << sql;
 		if (!query.exec(sql))
 		{
 			qDebug() << "½áËã³ö´í£º"<<query.lastError();
