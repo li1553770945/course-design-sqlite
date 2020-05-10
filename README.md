@@ -1,4 +1,3 @@
-# course-design-sqlite
 # <center>《面向对象程序设计课程设计》报告 </center>
 [![](https://img.shields.io/github/v/release/li1553770945/course-design-sqlite?include_prereleases)](https://github.com/li1553770945/course-design-sqlite/releases)
 ![](https://img.shields.io/github/repo-size/li1553770945/course-design-sqlite) 
