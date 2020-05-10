@@ -16,4 +16,5 @@ public:
 	double GetSum();
 	double GetSumFaxed();
 	bool Sattle();
+	void Delete(int row);
 };

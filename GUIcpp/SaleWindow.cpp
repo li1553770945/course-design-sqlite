@@ -113,7 +113,7 @@ void SaleWindow::on_ButtonAddToCart_clicked()
 		}
 		else
 		{
-			QMessageBox box(QMessageBox::Information, "提示", "您已经购买此书，位于购物车第"+QString::number(row)+"行，您的购买总量将超过库存！");
+			QMessageBox box(QMessageBox::Information, "提示", "您已经购买此书，位于购物车第"+QString::number(row+1)+"行，您的购买总量将超过库存！");
 			box.exec();
 			return;
 		}
@@ -137,7 +137,7 @@ void SaleWindow::on_ButtonSattle_clicked()//结算按钮
 	{
 		if (!sale_model->Sattle())
 		{
-			QMessageBox box(QMessageBox::Critical, "错误", "抱歉，程序发生未知错误！");
+			QMessageBox box(QMessageBox::Critical, "错误", "抱歉，程序发生未知错误，交易未能成功！");
 			box.exec();
 			return;
 		}
@@ -253,25 +253,22 @@ void SaleWindow::FormatTableHeader()
 		ui.TableCart->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
 	}
 }
-//void SaleWindow::on_TableCart_customContextMenuRequested(const QPoint &pos)
-//{
-//	QModelIndex index = ui.TableCart->indexAt(pos);
-//	int row = index.row(); // 获取鼠标所在行
-//	_delete_row_ = row;
-//	if (row == -1)
-//		return;
-//	QMenu *menu=new QMenu(this);
-//	QAction *action=new QAction("删除",this);
-//	connect(action, SIGNAL(triggered()), this, SLOT(Delete()));
-//	menu->addAction(action);
-//	menu->exec(QCursor::pos());
-//	
-//	
-//}
-//void SaleWindow::Delete()
-//{
-//	_sale_.DeleteItem(_delete_row_);
-//	ui.TableCart->removeRow(_delete_row_);
-//	ui.Sum->setText(QString::number(_sale_.GetSum()));
-//	ui.SumFaxed->setText(QString::number(_sale_.GetSumFaxed()));
-//}
+void SaleWindow::on_TableCart_customContextMenuRequested(const QPoint &pos)
+{
+	QModelIndex index = ui.TableCart->indexAt(pos);
+	int row = index.row(); // 获取鼠标所在行
+	if (row == -1)
+		return;
+	_delete_row_ = row;
+	QMenu *menu=new QMenu(this);
+	QAction *action=new QAction("删除",this);
+	connect(action, SIGNAL(triggered()), this, SLOT(Delete()));
+	menu->addAction(action);
+	menu->exec(QCursor::pos());
+}
+void SaleWindow::Delete()
+{
+	sale_model -> Delete(_delete_row_);
+	ui.Sum->setText(QString::number(sale_model->GetSum(),10,2));
+	ui.SumFaxed->setText(QString::number(sale_model->GetSumFaxed(), 10, 2));
+}

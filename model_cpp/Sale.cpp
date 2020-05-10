@@ -32,10 +32,10 @@ QVariant SaleModel::data(const QModelIndex& item, int role) const
 }
 void SaleModel::AddItem(const QSqlRecord &record,const  int &num, bool& status, int& row)
 {
-	QStandardItem* isbn = new QStandardItem(record.value("name").toString());
+	QStandardItem* isbn = new QStandardItem(record.value("isbn").toString());
 	for (int i = 0; i < rowCount(); i++)
 	{
-		if (item(i, 0)->data(0).toString() == record.value("name").toString())
+		if (item(i, 0)->data(0).toString() == record.value("isbn").toString())
 		{
 			if (num + item(i, 4)->data(0).toInt() > item(i, 2)->data(0).toInt())
 			{
@@ -99,14 +99,20 @@ bool SaleModel::Sattle()
 		
 		QSqlQuery query(Sqlite::_database);
 		QString sql;
-		int num = this->item(i, 2)->data(0).toInt() - this->item(i, 4)->data(0).toInt();
+		int num = item(i, 2)->data(0).toInt() - item(i, 4)->data(0).toInt();
 		sql = sql + "UPDATE books  SET qty="+QString::number(num)+" where isbn=" + item(i, 0)->data(0).toString();
+		qDebug() << sql;
 		if (!query.exec(sql))
 		{
-			qDebug() << query.lastError();
+			qDebug() << "½áËã³ö´í£º"<<query.lastError();
 			return false;
 		}
 	}
 	this->clear();
 	return true;
+}
+void SaleModel::Delete(int row)
+{
+	_sum_ -= item(row, 5)->data(0).toDouble();
+	removeRow(row);
 }
