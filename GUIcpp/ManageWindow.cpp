@@ -11,6 +11,7 @@ ManageWindow::ManageWindow(QWidget* parent) :QMainWindow(parent)
 {
 	ui.setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
+	ui.DateAddedAdd->setDate(QDate::currentDate());
 	ui.LineEditFax->setText(QString::number(SaleModel::GetFax(), 10, 2));
 }
 void ManageWindow::closeEvent(QCloseEvent* event)

@@ -27,7 +27,8 @@ private:
 	bool _add_enable_;
 	void  AddEnable(bool);
 	ReportWindow* report_window;
-	//FindWindow* find_window;
+	FindWindow* find_window;
+	void FormatTableHeader();
 	//int _delete_row_;
 
 private slots:
@@ -40,7 +41,7 @@ private slots:
 	void on_ButtonAddToCart_clicked();
 	void on_Num_returnPressed();
 	void on_ButtonSattle_clicked();
-	//void on_ButtonFind_clicked();
+	void on_ButtonFind_clicked();
 	void on_ButtonClear_clicked();
 	/*void on_TableCart_cellChanged(int, int);
 	void on_TableCart_customContextMenuRequested(const QPoint& pos);

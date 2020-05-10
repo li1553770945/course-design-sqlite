@@ -11,7 +11,7 @@ public:
 	static double GetFax();
 	SaleModel(QObject *parent);
 	QVariant data(const QModelIndex& item, int role) const;
-	void AddItem(const QSqlRecord & record,const  int & num);
+	void AddItem(const QSqlRecord & record,const  int & num,bool &status,int &row);//·µ»Ø×´Ì¬
 	void clear();
 	double GetSum();
 	double GetSumFaxed();

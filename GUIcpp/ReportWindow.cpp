@@ -8,6 +8,7 @@ ReportWindow::ReportWindow(QWidget* parent) :QMainWindow(parent)
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui.setupUi(this);
 	ui.Table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
 	books = new BookModel(this);
 	ui.Table->setModel(books);
 	SetData();
@@ -99,6 +100,15 @@ void ReportWindow::SetData()
 		books->setSort(column, Qt::DescendingOrder); //½µÐòÅÅÁÐ
 	}
 	books->select();
+	FormatTableHeader();
+}
+void ReportWindow::FormatTableHeader()
+{
+	
+	if (books->rowCount() != 0)
+	{
+		ui.Table->horizontalHeader()->setSectionResizeMode(1,QHeaderView::ResizeToContents);
+	}
 	ui.Table->setColumnHidden(0, true);
 }
 //void ReportWindow::Initialize()
@@ -159,5 +169,6 @@ void ReportWindow::SetData()
 //}
 void ReportWindow::on_ButtonSortConfirm_clicked()
 {
+	
 	SetData();
 }

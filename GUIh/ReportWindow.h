@@ -17,6 +17,7 @@ private:
 	//int _page_=1;
 	void closeEvent(QCloseEvent* event);
 	void SetData();
+	void FormatTableHeader();
 private slots:
 	void on_CheckBoxName_clicked();
 	void on_CheckBoxISBN_clicked();

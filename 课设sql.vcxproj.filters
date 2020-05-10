@@ -84,6 +84,9 @@
     <QtMoc Include="GUIh\BookInfoWindow.h">
       <Filter>Header Files\GUI</Filter>
     </QtMoc>
+    <QtMoc Include="GUIh\FindWindow.h">
+      <Filter>Header Files\GUI</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="h\global.h">
@@ -95,13 +98,13 @@
     <ClInclude Include="model_h\books.h">
       <Filter>Header Files\model</Filter>
     </ClInclude>
-    <ClInclude Include="GUIh\FindWindow.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="h\library.h">
       <Filter>Header Files\library</Filter>
     </ClInclude>
     <ClInclude Include="model_h\Sale.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="model_h\find.h">
       <Filter>Header Files\model</Filter>
     </ClInclude>
   </ItemGroup>
@@ -146,6 +149,9 @@
       <Filter>Source Files\book_data</Filter>
     </ClCompile>
     <ClCompile Include="model_cpp\Sale.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="model_cpp\find.cpp">
       <Filter>Source Files\model</Filter>
     </ClCompile>
   </ItemGroup>

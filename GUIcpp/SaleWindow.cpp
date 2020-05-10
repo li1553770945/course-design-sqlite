@@ -14,6 +14,7 @@ SaleWindow::SaleWindow(QWidget* parent)
 	ui.setupUi(this);
 	ui.Fax->setText(QString::number(SaleModel::GetFax(), 10, 2));
 	report_window = NULL;
+	find_window = NULL;
 	sale_model = new SaleModel(this);
 	ui.TableCart->setModel(sale_model);
 	_add_enable_ = false;
@@ -99,10 +100,23 @@ void SaleWindow::on_ButtonAddToCart_clicked()
 	}
 	else
 	{
-		sale_model->AddItem(_q_record_, num);
-		ui.TableCart->setColumnHidden(4, true);
-		ui.Sum->setText(QString::number(sale_model->GetSum(),10,2));
-		ui.SumFaxed->setText(QString::number(sale_model->GetSumFaxed(), 10, 2));
+		bool status;
+		int row;
+		sale_model->AddItem(_q_record_, num, status, row);
+		if (status)
+		{
+			FormatTableHeader();
+			ui.Num->setText("");
+			ui.Sum->setText(QString::number(sale_model->GetSum(), 10, 2));
+			ui.SumFaxed->setText(QString::number(sale_model->GetSumFaxed(), 10, 2));
+			ui.ISBN->setText("");
+		}
+		else
+		{
+			QMessageBox box(QMessageBox::Information, "提示", "您已经购买此书，位于购物车第"+QString::number(row)+"行，您的购买总量将超过库存！");
+			box.exec();
+			return;
+		}
 	}
 }
 void SaleWindow::on_Num_returnPressed()
@@ -149,20 +163,20 @@ void SaleWindow::AddEnable(bool enable)
 	ui.ButtonDetail->setEnabled(enable);
 	_add_enable_ = enable;
 }
-//void SaleWindow::on_ButtonFind_clicked()
-//{
-//	if (find_window == NULL)
-//	{
-//		find_window = new FindWindow(this);
-//		connect(find_window, SIGNAL(Close(std::string)), this, SLOT(SonClose(std::string)));
-//		find_window->show();
-//	}
-//	else
-//	{
-//		find_window->showNormal();
-//		find_window->activateWindow();
-//	}
-//}
+void SaleWindow::on_ButtonFind_clicked()
+{
+	if (find_window == NULL)
+	{
+		find_window = new FindWindow(this);
+		connect(find_window, SIGNAL(Close(std::string)), this, SLOT(SonClose(std::string)));
+		find_window->show();
+	}
+	else
+	{
+		find_window->showNormal();
+		find_window->activateWindow();
+	}
+}
 void SaleWindow::SonClose(std::string name)
 {
 	if (name == "report")
@@ -171,7 +185,7 @@ void SaleWindow::SonClose(std::string name)
 	}
 	if (name == "find")
 	{
-		//find_window = NULL;
+		find_window = NULL;
 	}
 }
 //void SaleWindow::on_TableCart_cellChanged(int row,int column)//双击修改数量
@@ -229,6 +243,14 @@ void SaleWindow::on_ButtonClear_clicked()
 		ui.Qty->setText("");
 		ui.Retail->setText("");
 		AddEnable(false);
+	}
+}
+void SaleWindow::FormatTableHeader()
+{
+	ui.TableCart->setColumnHidden(0, true);
+	if (sale_model->rowCount() != 0)
+	{
+		ui.TableCart->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
 	}
 }
 //void SaleWindow::on_TableCart_customContextMenuRequested(const QPoint &pos)

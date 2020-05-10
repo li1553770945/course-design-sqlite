@@ -14,7 +14,7 @@ void BookInfoWindow::ReceiveBook(QSqlRecord record)
 	ui.Author->setText(record.value("author").toString());
 	ui.Publisher->setText(record.value("publisher").toString());
 	ui.DateAdded->setText(record.value("date_added").toString());
-	ui.Retail->setText(QString::number(record.value("publisher").toDouble(),10,2));
+	ui.Retail->setText(QString::number(record.value("retail").toDouble(),10,2));
 	ui.Wholesale->setText(QString::number(record.value("wholesale").toDouble(), 10, 2));
 	ui.Qty->setText(QString::number(record.value("qty").toInt()));
 }
