@@ -6,6 +6,7 @@
 #include "../model_h/sqlite.h"
 #include <qsqlrecord.h>
 #include <qdebug.h>
+#include <qsettings.h>
 # pragma execution_character_set("utf-8")
 ManageWindow::ManageWindow(QWidget* parent) :QMainWindow(parent)
 {
@@ -173,6 +174,8 @@ void ManageWindow::on_ButtonFaxConfirm_clicked()
 	else
 	{
 		SaleModel::SetFax(fax);
+		QSettings configIni("config.ini", QSettings::IniFormat);
+		configIni.setValue("Sale/fax_rate", fax);
 		QMessageBox box(QMessageBox::Information, "提示", "设置成功！");
 		box.exec();
 	}

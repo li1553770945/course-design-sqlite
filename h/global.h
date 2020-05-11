@@ -8,3 +8,4 @@ double my_atof(const char* const&);
 bool AccessFile();
 bool OpenFile();
 bool CreateFile();
+bool LoadConfig();

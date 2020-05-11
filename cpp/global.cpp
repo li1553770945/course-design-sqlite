@@ -1,7 +1,9 @@
 #include "../h/global.h"
 #include <io.h>
 #include "../model_h/sqlite.h"
-
+#include "../model_h/Sale.h"
+#include <qsettings.h>
+#include <qdebug.h>
 MainWindow* mainwindow_ptr;
 int my_atoi(const char* const& str)
 {
@@ -67,5 +69,17 @@ bool CreateFile()
 		return false;
 	if (!Sqlite::CreateBooksTable())
 		return false;
+	return true;
+}
+bool LoadConfig()
+{
+	QSettings configIni("config.ini", QSettings::IniFormat);
+	QString fax_rate = configIni.value("Sale/fax_rate").toString();
+	if (fax_rate != "")
+	{
+		double rate = my_atof(fax_rate.toStdString().data());
+		if (rate >= 0)
+			SaleModel::SetFax(rate);
+	}
 	return true;
 }

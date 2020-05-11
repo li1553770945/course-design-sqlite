@@ -53,6 +53,7 @@ void MainWindow::LoadFile()
 			exit(EXIT_FAILURE);
 		}
 	}
+	LoadConfig();
 }
 void MainWindow::on_ButtonSale_clicked()
 {
