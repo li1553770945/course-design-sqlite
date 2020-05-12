@@ -6,4 +6,5 @@ public:
 	static bool Open();
 	static bool CreateBooksTable();
 	static bool Close();
+	static void LoadDataBase();
 };

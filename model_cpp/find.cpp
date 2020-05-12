@@ -39,7 +39,6 @@ bool FindModel::Query(QString& key, std::vector <QString>& find_fields, QString&
 	this->setHeaderData(6, Qt::Horizontal, "库存");
 	this->setHeaderData(7, Qt::Horizontal, "零售价");
 	this->setHeaderData(8, Qt::Horizontal, "批发价");
-	qDebug() << sql;
 	return true;
 }
 QVariant FindModel::data(const QModelIndex& item, int role) const

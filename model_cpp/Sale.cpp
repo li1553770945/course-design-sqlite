@@ -2,7 +2,7 @@
 #include <qstandarditemmodel.h>
 #include <qsqlrecord.h>
 #include <qsqlquery.h>
-#include "../model_h/sqlite.h"
+#include "../h/sqlite.h"
 #include <qdebug.h>
 #include <QSqlError>
 #include "qmessagebox.h"
@@ -49,8 +49,6 @@ void SaleModel::AddItem(const QSqlRecord &record,int &num, bool& status, int& ro
 			else
 			{
 				_sum_ += record.value("retail").toDouble() * num;
-				
-				qDebug() << _sum_;
 				num = item(i, 4)->data(0).toInt() + num;
 				setData(index(i,4),QString::number(num));
 				_num_[i]=num;

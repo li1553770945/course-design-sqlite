@@ -1,10 +1,8 @@
 #include "../h/global.h"
 #include <io.h>
-#include "../model_h/sqlite.h"
 #include "../model_h/Sale.h"
 #include <qsettings.h>
 #include <qdebug.h>
-MainWindow* mainwindow_ptr;
 int my_atoi(const char* const& str)
 {
 	if (strlen(str) == 0)
@@ -54,22 +52,6 @@ double my_atof(const char* const& str)
 		}
 	}
 	return atof(str);
-}
-bool AccessFile()
-{
-	return !(_access("library.db", 0) == -1);
-}
-bool OpenFile()
-{
-	return Sqlite::Open();
-}
-bool CreateFile()
-{
-	if (!Sqlite::Open())
-		return false;
-	if (!Sqlite::CreateBooksTable())
-		return false;
-	return true;
 }
 bool LoadConfig()
 {

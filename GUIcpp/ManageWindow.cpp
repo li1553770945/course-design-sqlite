@@ -3,7 +3,7 @@
 #include <qmessagebox.h>
 #include "../h/global.h"
 #include "../model_h/books.h"
-#include "../model_h/sqlite.h"
+#include "../h/sqlite.h"
 #include <qsqlrecord.h>
 #include <qdebug.h>
 #include <qsettings.h>

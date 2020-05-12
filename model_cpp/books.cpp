@@ -2,7 +2,7 @@
 #include "../h/global.h"
 #include <qsqlrecord.h>
 #include <qdebug.h>
-#include "../model_h/sqlite.h"
+#include "../h/sqlite.h"
 
 #pragma execution_character_set("utf-8")
 BookModelNotSort::BookModelNotSort(QObject* parent=(QObject*)nullptr):QSqlTableModel(parent)

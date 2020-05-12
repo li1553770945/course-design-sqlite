@@ -8,7 +8,7 @@
 #include <QCloseEvent> 
 #include <QProgressDialog>
 #include <qthread.h>
-#include "../model_h/sqlite.h"
+#include "../h/sqlite.h"
 #include <qdebug.h>
 #include "../model_h/books.h"
 # pragma execution_character_set("utf-8")
@@ -18,40 +18,22 @@ MainWindow::MainWindow(QWidget *parent)
 	sale_window=NULL;
 	manage_window = NULL;
 	report_window=NULL;
+	this->setAttribute(Qt::WA_DeleteOnClose);
 	LoadFile();
 	ui.setupUi(this);
-	this->setAttribute(Qt::WA_DeleteOnClose);
+	
 }
 void MainWindow::LoadFile()
 {
-	if(AccessFile())
-	{ 
-		if (!OpenFile())
-		{
-			QMessageBox box(QMessageBox::Critical, "错误", "无法打开书库文件！");
-			box.exec();
-		}
-	}
-	else
+	try 
 	{
-		QMessageBox box(QMessageBox::Warning, "警告", "书库文件不存在，将尝试创建");
+		Sqlite::LoadDataBase();
+	}
+	catch (QString err)
+	{
+		QMessageBox box(QMessageBox::Critical, "错误", err);
 		box.exec();
-		//尝试创建
-		if (CreateFile())
-		{
-			if (!OpenFile())
-			{
-				QMessageBox box(QMessageBox::Critical, "错误", "创建已成功，但无法打开文件！");
-				box.exec();
-				exit(EXIT_FAILURE);
-			}
-		}
-		else
-		{
-			QMessageBox box(QMessageBox::Critical, "错误", "无法创建书库文件！");
-			box.exec();
-			exit(EXIT_FAILURE);
-		}
+		exit(EXIT_FAILURE);
 	}
 	LoadConfig();
 }
@@ -75,7 +57,6 @@ void MainWindow::on_ButtonSale_clicked()
 	{
 		sale_window->showNormal();
 		sale_window->activateWindow();
-
 	}
 }
 void MainWindow::on_ButtonManage_clicked()
