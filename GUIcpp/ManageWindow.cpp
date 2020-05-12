@@ -81,7 +81,7 @@ void ManageWindow::on_ButtonISBNConfirm_clicked()
 		ui.QtyEdit->setText(record.value("qty").toString());
 		ui.RetailEdit->setText(QString::number(record.value("retail").toDouble(), 10, 2));
 		ui.WholesaleEdit->setText(QString::number(record.value("retail").toDouble(), 10, 2));
-		ui.DateAddedEdit->setDate(QDate::fromString(record.value("publisher").toString(), "yyyy-MM-dd"));
+		ui.DateAddedEdit->setDate(QDate::fromString(record.value("date_added").toString(), "yyyy-MM-dd"));
 	}
 }
 void ManageWindow::on_ButtonDelete_clicked()
@@ -127,10 +127,10 @@ void ManageWindow::on_ButtonSave_clicked()
 		book.SetAuthor(ui.AuthorEdit->text().toStdString().data());//设置作者
 
 		book.SetPub(ui.PublisherEdit->text().toStdString().data());//设置出版社
-		book.SetQty(my_atoi(ui.QtyEdit->text().toLatin1().data()));//设置库存
-		book.SetRetail(my_atof(ui.RetailEdit->text().toLatin1().data()));//设置零售价
-		book.SetWholesale(my_atof(ui.WholesaleEdit->text().toLatin1().data()));//设置批发价
-		book.SetDateAdded(ui.DateAddedEdit->date().toString("yyyy-MM-dd").toLatin1());//设置进货日期
+		book.SetQty(my_atoi(ui.QtyEdit->text().toStdString().data()));//设置库存
+		book.SetRetail(my_atof(ui.RetailEdit->text().toStdString().data()));//设置零售价
+		book.SetWholesale(my_atof(ui.WholesaleEdit->text().toStdString().data()));//设置批发价
+		book.SetDateAdded(ui.DateAddedEdit->date().toString("yyyy-MM-dd").toStdString().data());//设置进货日期
 	}
 	catch (const char* err)
 	{
@@ -147,6 +147,7 @@ void ManageWindow::on_ButtonSave_clicked()
 	sql = sql + ",qty ='" + QString::number(book.GetQty())+"'";
 	sql = sql + ",retail ='" + QString::number(book.GetRetail(),10,2)+"'";
 	sql = sql + ",wholesale ='" + QString::number(book.GetWholesale(),10,2)+"'";
+	sql = sql + ",date_added ='" + QString(book.GetDateAdded()) + "'";
 	sql = sql + " WHERE isbn='" + _q_result.value("isbn").toString()+"'";
 	if (query.exec(sql))
 	{
