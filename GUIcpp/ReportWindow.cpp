@@ -1,6 +1,6 @@
 #include "../GUIh/ReportWindow.h"
 #include "../h/global.h"
-#include "../model_h/books.h"
+#include "../model_h/report.h"
 #include <QtWidgets\qmessagebox.h>
 # pragma execution_character_set("utf-8")
 ReportWindow::ReportWindow(QWidget* parent) :QMainWindow(parent)
@@ -8,8 +8,9 @@ ReportWindow::ReportWindow(QWidget* parent) :QMainWindow(parent)
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui.setupUi(this);
 	report_model = new BookModelNotSort(this);
+	sort_model = new ReportModel(this,report_model);
 	ui.Table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-	ui.Table->setModel(report_model);
+	ui.Table->setModel(sort_model);
 	SetData();
 }
 void ReportWindow::closeEvent(QCloseEvent* event)
@@ -92,11 +93,14 @@ void ReportWindow::SetData()
 		column = 8;
 	if (ui.RadioPositive->isChecked())
 	{
-		report_model->setSort(column, Qt::AscendingOrder); //升序排列
+
+		sort_model->sort(column, Qt::AscendingOrder);
+		//升序排列
 	}
 	else
 	{
-		report_model->setSort(column, Qt::DescendingOrder); //降序排列
+		sort_model->sort(column, Qt::DescendingOrder);
+		//降序排列
 	}
 	report_model->select();
 	FormatTableHeader();
@@ -110,62 +114,6 @@ void ReportWindow::FormatTableHeader()
 	}
 	ui.Table->setColumnHidden(0, true);
 }
-//void ReportWindow::Initialize()
-//{
-//	_max_page_ = (books.size() + _item_one_page_ - 1) / _item_one_page_;
-//	ui.LabelSumPage->setText(QString::number(_max_page_));
-//	ui.LineEditPage->setText(QString::number(1));
-//	_page_ = 1;
-//	Report::SetBookVec();
-//	on_ButtonSortConfirm_clicked();
-//	SetData();
-//}
-//void ReportWindow::on_ButtonPreviousPage_clicked()
-//{
-//	if (_page_ == 1)
-//	{
-//		QMessageBox box(QMessageBox::Information, "提示", "已经是第一页！");
-//		box.exec();
-//	}
-//	else
-//	{
-//		_page_--;
-//		SetData();
-//		ui.LineEditPage->setText(QString::number(_page_));
-//	}
-//}
-//void ReportWindow::on_ButtonNextPage_clicked()
-//{
-//	if (_page_ == _max_page_)
-//	{
-//		QMessageBox box(QMessageBox::Information, "提示", "已经是最后一页！");
-//		box.exec();
-//	}
-//	else
-//	{
-//		_page_++;
-//		SetData();
-//		ui.LineEditPage->setText(QString::number(_page_));
-//	}
-//
-//}
-//void ReportWindow::on_LineEditPage_returnPressed()
-//{
-//	int page = my_atoi(ui.LineEditPage->text().toLocal8Bit().data());
-//	if (page < 1||page>_max_page_)
-//	{
-//		char information[50];
-//		sprintf(information, "页数必须是1~%d之间的整数！",_max_page_);
-//		QMessageBox box(QMessageBox::Information, "提示", information);
-//		ui.LineEditPage->setText(QString::number(_page_));
-//		box.exec();
-//	}
-//	else
-//	{
-//		_page_ = page;
-//		SetData();
-//	}
-//}
 void ReportWindow::on_ButtonSortConfirm_clicked()
 {
 	

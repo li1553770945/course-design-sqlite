@@ -44,7 +44,7 @@
     <ClInclude Include="h\global.h" />
     <ClInclude Include="h\library.h" />
     <ClInclude Include="h\sqlite.h" />
-    <ClInclude Include="model_h\books.h" />
+    <ClInclude Include="model_h\report.h" />
     <ClInclude Include="model_h\find.h" />
     <QtMoc Include="model_h\Sale.h" />
   </ItemGroup>
@@ -61,7 +61,7 @@
     <ClCompile Include="GUIcpp\ManageWindow.cpp" />
     <ClCompile Include="GUIcpp\ReportWindow.cpp" />
     <ClCompile Include="GUIcpp\SaleWindow.cpp" />
-    <ClCompile Include="model_cpp\books.cpp" />
+    <ClCompile Include="model_cpp\report.cpp" />
     <ClCompile Include="model_cpp\find.cpp" />
     <ClCompile Include="model_cpp\Sale.cpp" />
   </ItemGroup>

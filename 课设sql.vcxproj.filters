@@ -92,9 +92,6 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="model_h\books.h">
-      <Filter>Header Files\model</Filter>
-    </ClInclude>
     <ClInclude Include="h\library.h">
       <Filter>Header Files\library</Filter>
     </ClInclude>
@@ -106,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="h\sqlite.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model_h\report.h">
+      <Filter>Header Files\model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -136,9 +136,6 @@
     <ClCompile Include="cpp\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="model_cpp\books.cpp">
-      <Filter>Source Files\model</Filter>
-    </ClCompile>
     <ClCompile Include="cpp\BookData.cpp">
       <Filter>Source Files\book_data</Filter>
     </ClCompile>
@@ -153,6 +150,9 @@
     </ClCompile>
     <ClCompile Include="cpp\sqlite.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model_cpp\report.cpp">
+      <Filter>Source Files\model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

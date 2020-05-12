@@ -6,6 +6,7 @@
 #include <qdebug.h>
 #include "../h/global.h"
 #include "../GUIh/BookInfoWindow.h"
+#include "../h/sqlite.h"
 # pragma execution_character_set("utf-8")
 SaleWindow::SaleWindow(QWidget* parent)
 	: QMainWindow(parent)

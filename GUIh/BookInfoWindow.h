@@ -10,8 +10,7 @@ class BookInfoWindow : public QDialog
 public:
 	BookInfoWindow(QWidget* parent = Q_NULLPTR);
 private slots:
-	void ReceiveBook(QSqlRecord);
+	void ReceiveBook(QSqlRecord);//接受书的信息
 private:
 	Ui::BookInfoWindowClass ui;
-	const BookData* book;
 };

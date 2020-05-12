@@ -2,7 +2,6 @@
 #include "../h/library.h"
 #include <qmessagebox.h>
 #include "../h/global.h"
-#include "../model_h/books.h"
 #include "../h/sqlite.h"
 #include <qsqlrecord.h>
 #include <qdebug.h>

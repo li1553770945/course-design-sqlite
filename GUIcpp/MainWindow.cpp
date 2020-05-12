@@ -10,7 +10,6 @@
 #include <qthread.h>
 #include "../h/sqlite.h"
 #include <qdebug.h>
-#include "../model_h/books.h"
 # pragma execution_character_set("utf-8")
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -27,7 +26,7 @@ void MainWindow::LoadFile()
 {
 	try 
 	{
-		Sqlite::LoadDataBase();
+		Sqlite::LoadDataBase();//尝试加载数据库
 	}
 	catch (QString err)
 	{
@@ -59,7 +58,7 @@ void MainWindow::on_ButtonSale_clicked()
 		sale_window->activateWindow();
 	}
 }
-void MainWindow::on_ButtonManage_clicked()
+void MainWindow::on_ButtonManage_clicked()//和收银模块同理
 {
 	if (sale_window != NULL)
 	{
@@ -95,7 +94,7 @@ void MainWindow::on_ButtonReport_clicked()
 		report_window->activateWindow();
 	}
 }
-void MainWindow::on_ButtonExit_clicked()
+void MainWindow::on_ButtonExit_clicked()//点击关闭按钮
 {
 	this->close();
 }
@@ -121,7 +120,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
 	}
 	
 }
-void MainWindow::CloseSon(std::string name)
+void MainWindow::CloseSon(std::string name)//子窗口关闭，要将本窗口的指针置位NULL
 {
 	if (name == "sale")
 	{
@@ -136,7 +135,7 @@ void MainWindow::CloseSon(std::string name)
 		report_window = NULL;
 	}
 }
-void MainWindow::on_ActionAbout_triggered()
+void MainWindow::on_ActionAbout_triggered()//关于窗口
 {
 	AboutWindow* about_window = new AboutWindow;
 	about_window->exec();

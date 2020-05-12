@@ -3,7 +3,10 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include "../h/sqlite.h"
+#include "../h/library.h"
+#include <iostream>
 #include <io.h>
+#include <qsqlrecord.h>
 #pragma execution_character_set("utf-8")
 QSqlDatabase Sqlite::_database;
 bool Sqlite::Open()
@@ -104,4 +107,53 @@ void Sqlite::LoadDataBase()
 			throw QString("创建数据表出错！") + err.text();;
 		}
 	}
+}
+BookOpe::Result BookOpe::Insert(BookData& book)
+{
+	if (QueryRow(string(book.GetISBN())) != -1)
+		return Result::Exist;
+	QSqlQuery query(Sqlite::_database);
+	query.prepare("insert into books(name,isbn,author,publisher,date_added,qty,retail,wholesale) VALUES (:name,:isbn,:author,:publisher,:date_added,:qty,:retail,:wholesale)");
+	query.bindValue(":name", QString::fromLocal8Bit(book.GetName()));
+	query.bindValue(":isbn", book.GetISBN());
+	query.bindValue(":author", QString::fromLocal8Bit(book.GetAuth()));
+	query.bindValue(":publisher", QString::fromLocal8Bit(book.GetPub()));
+	query.bindValue(":date_added", book.GetDateAdded());
+	query.bindValue(":qty", book.GetQty());
+	query.bindValue(":retail", book.GetRetail());
+	query.bindValue(":wholesale", book.GetWholesale());
+	if (query.exec())
+		return Result::Success;
+	else
+		return Result::Fail;
+}
+BookOpe::Result BookOpe::Delete(string& isbn)
+{
+	QSqlQuery query(Sqlite::_database);
+	if (query.exec("DELETE FROM books WHERE isbn='" + QString::fromStdString(isbn) + "'"))
+		return Result::Success;
+	else
+		return Result::Fail;
+}
+int  BookOpe::QueryRow(string& isbn)
+{
+	QSqlQuery query;
+	query.exec("SELECT id FROM books WHERE isbn='" + QString::fromStdString(isbn) + "'");
+	query.last();
+	if (query.isValid())
+	{
+		return query.at();
+	}
+	else
+	{
+		return -1;
+	}
+}
+QSqlRecord BookOpe::Query(string& isbn)
+{
+	QSqlQuery query(Sqlite::_database);
+	QString sql = "SELECT * FROM books WHERE isbn='" + QString::fromStdString(isbn) + "'";
+	query.exec(sql);
+	query.first();
+	return query.record();
 }

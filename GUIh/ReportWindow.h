@@ -1,6 +1,6 @@
 #pragma once
 #include "ui_ReportWindow.h"
-#include "../model_h/books.h"
+#include "../model_h/report.h"
 class ReportWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -11,6 +11,7 @@ public:
 
 private:
 	BookModelNotSort *report_model;
+	ReportModel *sort_model;
 	Ui::ReportWindowClass ui;
 	static const int _item_one_page_=1000;
 	//int _max_page_;

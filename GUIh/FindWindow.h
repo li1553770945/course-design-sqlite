@@ -14,11 +14,12 @@ public:
 private:
 	Ui::FindWindowClass ui;
 	FindModel* find_model;
-	void FormatTableHeader();
+	void FormatTableHeader();/*格式化标题，例如每次查询后将第一列列宽设置自动调整
+							 如果没有，直接设置按内容调整但没有内容会死机*/
 private slots:
-	void closeEvent(QCloseEvent* event);
-	void on_ButtonFind_clicked();
-	void on_LineEditContent_returnPressed();
+	void closeEvent(QCloseEvent* event);//关闭的时候告诉父窗口
+	void on_ButtonFind_clicked();//点击查找按钮
+	void on_LineEditContent_returnPressed();//按下回车键，直接调用点击查找按钮的槽函数
 signals:
-	void Close(std::string);
+	void Close(std::string);//
 };
