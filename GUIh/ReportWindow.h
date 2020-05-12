@@ -10,7 +10,7 @@ public:
 
 
 private:
-	BookModel *books;
+	BookModelNotSort *report_model;
 	Ui::ReportWindowClass ui;
 	static const int _item_one_page_=1000;
 	//int _max_page_;

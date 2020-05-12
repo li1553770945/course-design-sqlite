@@ -6,6 +6,7 @@
 #include <qdebug.h>
 #include <QSqlError>
 #include "qmessagebox.h"
+#include "../h/global.h"
 # pragma execution_character_set("utf-8")
 double SaleModel::_fax_ = 0.06;
 void SaleModel::SetFax(double fax)
@@ -18,6 +19,7 @@ double SaleModel::GetFax()
 }
 SaleModel::SaleModel(QObject* parent=(QObject*)nullptr):QStandardItemModel(parent)
 {
+	//connect(this, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(ItemChange(QStandardItem*)));
 	_sum_ = 0;
 }
 QVariant SaleModel::data(const QModelIndex& item, int role) const
@@ -30,8 +32,9 @@ QVariant SaleModel::data(const QModelIndex& item, int role) const
 	}
 	return value;
 }
-void SaleModel::AddItem(const QSqlRecord &record,const  int &num, bool& status, int& row)
+void SaleModel::AddItem(const QSqlRecord &record,int &num, bool& status, int& row)
 {
+
 	QStandardItem* isbn = new QStandardItem(record.value("isbn").toString());
 	for (int i = 0; i < rowCount(); i++)
 	{
@@ -45,15 +48,20 @@ void SaleModel::AddItem(const QSqlRecord &record,const  int &num, bool& status, 
 			}
 			else
 			{
-				setData(index(i,4),QString::number(item(i, 4)->data(0).toInt()+num));
-				setData(index(i,5),QString::number(item(i, 4)->data(0).toInt()* record.value("retail").toDouble(),10,2));
 				_sum_ += record.value("retail").toDouble() * num;
+				
+				qDebug() << _sum_;
+				num = item(i, 4)->data(0).toInt() + num;
+				setData(index(i,4),QString::number(num));
+				_num_[i]=num;
+				setData(index(i,5),QString::number(num* record.value("retail").toDouble(),10,2));
 				row = i;
 				status = true;
 				return;
 			}
 		}
 	}
+	_num_.push_back(num);
 	QStandardItem* name = new QStandardItem(record.value("name").toString());
 	name->setEditable(false);
 	QStandardItem* retail = new QStandardItem(QString::number(record.value("retail").toDouble(),10,2));
@@ -83,6 +91,7 @@ void SaleModel::clear()
 {
 	QStandardItemModel::clear();
 	_sum_ = 0;
+	_num_.clear();
 }
 double SaleModel::GetSum()
 {
@@ -114,4 +123,43 @@ void SaleModel::Delete(int row)
 {
 	_sum_ -= item(row, 5)->data(0).toDouble();
 	removeRow(row);
+	_num_.erase(_num_.begin() + row);
+}
+void SaleModel::ItemChange(QStandardItem* changed_item)
+{
+	int row = changed_item->row();
+	int change_num = my_atoi(changed_item->data(0).toString().toStdString().data());
+	if (changed_item->column()==4&& (change_num != _num_[changed_item->row()]))//如果修改的是单价并且是用户修改
+	{
+		int qty = this->item(row, 2)->data(0).toInt();
+		if (change_num>0&&change_num<=qty)
+		{
+			qDebug() << "检测到手动修改修改" << endl;
+			_sum_ += (change_num - _num_[row]) * this->item(row, 3)->data(0).toDouble();
+			this->setData(index(row, 5), QString::number(changed_item->data(0).toInt() * this->item(row, 3)->data(0).toDouble(), 10, 2));
+			_num_[row] = changed_item->data(0).toInt();
+			
+		}
+		else
+		{
+			QMessageBox box;
+			box.setIcon(QMessageBox::Information);
+			box.setWindowTitle("提示");
+			if (change_num >  this->item(row, 2)->data(0).toInt())
+			{
+				box.setText("您的购买量已经超过库存！");
+			}
+			else if (change_num < 0)
+			{
+				box.setText("购买量必须为大于0的整数！");
+			}
+			else if (change_num == 0)
+			{
+				box.setText("购买量必须大于0！如您需要取消购买，请右键点击本项-删除。");
+			}
+			box.exec();
+			this->setData(index(row, 4), QString::number(_num_[row]));
+		}
+
+	}
 }

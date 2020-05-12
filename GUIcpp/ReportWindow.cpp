@@ -7,10 +7,9 @@ ReportWindow::ReportWindow(QWidget* parent) :QMainWindow(parent)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui.setupUi(this);
+	report_model = new BookModelNotSort(this);
 	ui.Table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-	books = new BookModel(this);
-	ui.Table->setModel(books);
+	ui.Table->setModel(report_model);
 	SetData();
 }
 void ReportWindow::closeEvent(QCloseEvent* event)
@@ -93,19 +92,19 @@ void ReportWindow::SetData()
 		column = 8;
 	if (ui.RadioPositive->isChecked())
 	{
-		books->setSort(column, Qt::AscendingOrder); //ÉýÐòÅÅÁÐ
+		report_model->setSort(column, Qt::AscendingOrder); //ÉýÐòÅÅÁÐ
 	}
 	else
 	{
-		books->setSort(column, Qt::DescendingOrder); //½µÐòÅÅÁÐ
+		report_model->setSort(column, Qt::DescendingOrder); //½µÐòÅÅÁÐ
 	}
-	books->select();
+	report_model->select();
 	FormatTableHeader();
 }
 void ReportWindow::FormatTableHeader()
 {
 	
-	if (books->rowCount() != 0)
+	if (report_model->rowCount() != 0)
 	{
 		ui.Table->horizontalHeader()->setSectionResizeMode(1,QHeaderView::ResizeToContents);
 	}

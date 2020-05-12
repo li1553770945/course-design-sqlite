@@ -16,14 +16,15 @@ SaleWindow::SaleWindow(QWidget* parent)
 	report_window = NULL;
 	find_window = NULL;
 	sale_model = new SaleModel(this);
+	connect(sale_model, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(ItemChange(QStandardItem*)));
 	ui.TableCart->setModel(sale_model);
 	_add_enable_ = false;
 	
 }
 void SaleWindow::on_Confirm_clicked()
 {
-	_q_record_=BookOpe::Query(ui.ISBN->text().toStdString());
-	if (_q_record_.value(1).isNull())
+	QSqlRecord query_result= BookOpe::Query(ui.ISBN->text().toStdString());
+	if (query_result.value(1).isNull())
 	{
 		QMessageBox box(QMessageBox::Information, "提示", "没有找到该ISBN！");
 		box.exec();
@@ -31,6 +32,7 @@ void SaleWindow::on_Confirm_clicked()
 	}
 	else
 	{
+		_q_record_ = query_result;
 		ui.Name->setText(_q_record_.value("name").toString());
 		ui.Retail->setText(QString::number(_q_record_.value("retail").toDouble(),10,2));
 		ui.Qty->setText(QString::number(_q_record_.value("qty").toInt()));
@@ -92,7 +94,7 @@ void SaleWindow::on_ButtonAddToCart_clicked()
 		box.exec();
 		return;
 	}
-	if (num > _q_record_.value("qty").toInt())
+	else if (num > _q_record_.value("qty").toInt())
 	{
 		QMessageBox box(QMessageBox::Information, "提示", "您的购买量已经超过库存！");
 		box.exec();
@@ -102,6 +104,7 @@ void SaleWindow::on_ButtonAddToCart_clicked()
 	{
 		bool status;
 		int row;
+		disconnect(sale_model, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(ItemChange(QStandardItem*)));
 		sale_model->AddItem(_q_record_, num, status, row);
 		if (status)
 		{
@@ -113,10 +116,10 @@ void SaleWindow::on_ButtonAddToCart_clicked()
 		}
 		else
 		{
-			QMessageBox box(QMessageBox::Information, "提示", "您已经购买此书，位于购物车第"+QString::number(row+1)+"行，您的购买总量将超过库存！");
+			QMessageBox box(QMessageBox::Information, "提示", "您已经购买此书，位于购物车第" + QString::number(row + 1) + "行，您的购买总量将超过库存！");
 			box.exec();
-			return;
 		}
+		connect(sale_model, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(ItemChange(QStandardItem*)));
 	}
 }
 void SaleWindow::on_Num_returnPressed()
@@ -188,42 +191,6 @@ void SaleWindow::SonClose(std::string name)
 		find_window = NULL;
 	}
 }
-//void SaleWindow::on_TableCart_cellChanged(int row,int column)//双击修改数量
-//{
-//	QByteArray ba=ui.TableCart->item(row, column)->text().toLatin1();
-//	int num = my_atoi(ba.data());
-//	if (num <= 0)
-//	{
-//		QMessageBox box(QMessageBox::Information, "提示", "数量必须为大于0的整数！");
-//		box.exec();
-//		ui.TableCart->disconnect(SIGNAL(cellChanged(int, int)));
-//		ui.TableCart->setItem(row, 2, new QTableWidgetItem(QString::number(_sale_.GetNum(row))));//还原用户更改
-//		ui.TableCart->item(row, 2)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-//		connect(ui.TableCart, SIGNAL(cellChanged(int, int)), this, SLOT(on_TableCart_cellChanged(int, int)));
-//		return;
-//	}
-//	if (_sale_.ChangeItem(row, num))
-//	{
-//	
-//		ui.TableCart->disconnect(SIGNAL(cellChanged(int, int)));
-//		ui.TableCart->setItem(row, 3, new QTableWidgetItem(QString::number(_sale_.GetRetail(row)*num,10,2)));//修正总价
-//		ui.TableCart->item(row, 3)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-//		connect(ui.TableCart, SIGNAL(cellChanged(int, int)), this, SLOT(on_TableCart_cellChanged(int, int)));
-//		ui.Sum->setText(QString::number(_sale_.GetSum()));
-//		ui.SumFaxed->setText(QString::number(_sale_.GetSumFaxed()));
-//		return;
-//	}
-//	else
-//	{
-//		QMessageBox box(QMessageBox::Information, "提示",QString("您的购买量已经超过库存")+QString::number(_sale_.GetQty(row))+QString("!"));
-//		box.exec();
-//		ui.TableCart->disconnect(SIGNAL(cellChanged(int, int)));
-//		ui.TableCart->setItem(row, 2, new QTableWidgetItem(QString::number(_sale_.GetNum(row))));//还原用户更改
-//		ui.TableCart->item(row, 2)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-//		connect(ui.TableCart, SIGNAL(cellChanged(int, int)), this, SLOT(on_TableCart_cellChanged(int, int)));
-//		return;
-//	}
-//}
 void SaleWindow::on_ButtonClear_clicked()
 {
 	if (sale_model->rowCount()==0)
@@ -271,4 +238,15 @@ void SaleWindow::Delete()
 	sale_model -> Delete(_delete_row_);
 	ui.Sum->setText(QString::number(sale_model->GetSum(),10,2));
 	ui.SumFaxed->setText(QString::number(sale_model->GetSumFaxed(), 10, 2));
+}
+
+void SaleWindow::ItemChange(QStandardItem* item)
+{
+	
+	if (item->column() == 4)
+	{
+		sale_model->ItemChange(item);
+		ui.Sum->setText(QString::number(sale_model->GetSum(), 10, 2));
+		ui.SumFaxed->setText(QString::number(sale_model->GetSumFaxed(), 10, 2));
+	}
 }

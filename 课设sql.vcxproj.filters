@@ -87,6 +87,9 @@
     <QtMoc Include="GUIh\FindWindow.h">
       <Filter>Header Files\GUI</Filter>
     </QtMoc>
+    <QtMoc Include="model_h\Sale.h">
+      <Filter>Header Files\model</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="h\global.h">
@@ -100,9 +103,6 @@
     </ClInclude>
     <ClInclude Include="h\library.h">
       <Filter>Header Files\library</Filter>
-    </ClInclude>
-    <ClInclude Include="model_h\Sale.h">
-      <Filter>Header Files\model</Filter>
     </ClInclude>
     <ClInclude Include="model_h\find.h">
       <Filter>Header Files\model</Filter>

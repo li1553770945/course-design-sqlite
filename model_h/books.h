@@ -3,13 +3,19 @@
 #include <QSqlQuery>
 #include <QSqlTableModel>
 #include "../h/library.h"
-class BookModel;
-class BookModel :public QSqlTableModel
+#include <qsortfilterproxymodel.h>
+class BookModelNotSort :public QSqlTableModel
 {
 public:
-	BookModel(QObject *parent);
+	BookModelNotSort(QObject *parent);
 	QVariant data(const QModelIndex& index, int role) const;
 	
+};
+class ReportModel:public QSortFilterProxyModel
+{
+public:
+	ReportModel(QObject * parent);
+	bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right);
 };
 class BookOpe {
 public:

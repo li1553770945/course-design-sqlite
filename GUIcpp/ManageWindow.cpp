@@ -119,20 +119,18 @@ void ManageWindow::on_ButtonSave_clicked()
 	BookData book;
 	try
 	{
-		QByteArray ba = ui.NameEdit->text().toLocal8Bit();
-		book.SetName(ba.data());//设置书名
-		book.SetISBN(ui.ISBNEdit->text().toLatin1().data());
+		
+		book.SetName(ui.NameEdit->text().toStdString().data());//设置书名
+		book.SetISBN(ui.ISBNEdit->text().toStdString().data());
 
-		ba = ui.AuthorEdit->text().toLocal8Bit();//设置作者
-		book.SetAuthor(ba.data());
+	
+		book.SetAuthor(ui.AuthorEdit->text().toStdString().data());//设置作者
 
-		ba = ui.PublisherEdit->text().toLocal8Bit();//设置出版社
-		book.SetPub(ba.data());//设置出版社
+		book.SetPub(ui.PublisherEdit->text().toStdString().data());//设置出版社
 		book.SetQty(my_atoi(ui.QtyEdit->text().toLatin1().data()));//设置库存
 		book.SetRetail(my_atof(ui.RetailEdit->text().toLatin1().data()));//设置零售价
 		book.SetWholesale(my_atof(ui.WholesaleEdit->text().toLatin1().data()));//设置批发价
-		ba = ui.DateAddedEdit->date().toString("yyyy-MM-dd").toLatin1(); // must
-		book.SetDateAdded(ba.data());//设置进货日期
+		book.SetDateAdded(ui.DateAddedEdit->date().toString("yyyy-MM-dd").toLatin1());//设置进货日期
 	}
 	catch (const char* err)
 	{
@@ -143,13 +141,13 @@ void ManageWindow::on_ButtonSave_clicked()
 	QSqlQuery query(Sqlite::_database);
 	QString sql;
 	sql = "UPDATE books SET";
-	sql = sql + " name =" + book.GetName();
-	sql = sql + ",author =" + book.GetAuth();
-	sql = sql + ",publisher =" + book.GetPub();
-	sql = sql + ",qty =" + QString::number(book.GetQty());
-	sql = sql + ",retail =" + QString::number(book.GetRetail(),10,2);
-	sql = sql + ",wholesale =" + QString::number(book.GetWholesale(),10,2);
-	sql = sql + " WHERE isbn=" + _q_result.value("isbn").toString();
+	sql = sql + " name ='" + book.GetName()+"'";
+	sql = sql + ",author ='" + book.GetAuth()+"'";
+	sql = sql + ",publisher ='" + book.GetPub()+"'";
+	sql = sql + ",qty ='" + QString::number(book.GetQty())+"'";
+	sql = sql + ",retail ='" + QString::number(book.GetRetail(),10,2)+"'";
+	sql = sql + ",wholesale ='" + QString::number(book.GetWholesale(),10,2)+"'";
+	sql = sql + " WHERE isbn='" + _q_result.value("isbn").toString()+"'";
 	if (query.exec(sql))
 	{
 		QMessageBox box(QMessageBox::Information, "提示", "修改成功！");

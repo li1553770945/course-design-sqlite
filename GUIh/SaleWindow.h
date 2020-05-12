@@ -32,7 +32,6 @@ private:
 	int _delete_row_;
 
 private slots:
-	;
 	void on_Confirm_clicked();
 	void on_ISBN_returnPressed();
 	void on_ButtonDetail_clicked();
@@ -43,8 +42,8 @@ private slots:
 	void on_ButtonSattle_clicked();
 	void on_ButtonFind_clicked();
 	void on_ButtonClear_clicked();
-	//void on_TableCart_cellChanged(int, int);
 	void on_TableCart_customContextMenuRequested(const QPoint& pos);
 	void Delete();
+	void ItemChange(QStandardItem*);
 };
 
