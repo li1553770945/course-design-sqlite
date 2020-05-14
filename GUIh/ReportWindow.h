@@ -1,6 +1,6 @@
 #pragma once
 #include "ui_ReportWindow.h"
-#include "../model_h/books.h"
+#include "../model_h/report.h"
 class ReportWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -10,14 +10,14 @@ public:
 
 
 private:
-	BookModel *books;
+	ReportModel* report_model;
 	Ui::ReportWindowClass ui;
-	static const int _item_one_page_=1000;
-	//int _max_page_;
-	//int _page_=1;
+	static const int _items_one_page_ = 100;
+	int _max_page_;
+	int _page_=1;
 	void closeEvent(QCloseEvent* event);
 	void SetData();
-	//void Initialize();
+	void FormatTableHeader();
 private slots:
 	void on_CheckBoxName_clicked();
 	void on_CheckBoxISBN_clicked();
@@ -28,10 +28,10 @@ private slots:
 	void on_CheckBoxRetail_clicked();
 	void on_CheckBoxWholesale_clicked();
 	void on_ButtonFlush_clicked();
-	/*void on_ButtonPreviousPage_clicked();
+	void on_ButtonPreviousPage_clicked();
 	void on_ButtonNextPage_clicked();
 	void on_LineEditPage_returnPressed();
-	void on_ButtonSortConfirm_clicked();*/
+	void on_ButtonSortConfirm_clicked();
 signals:
 	void Close(std::string);
 };

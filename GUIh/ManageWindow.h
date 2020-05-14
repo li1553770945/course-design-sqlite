@@ -2,6 +2,7 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_ManageWindow.h"
 #include "../h/library.h"
+#include <qsqlrecord.h>
 class ManageWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -10,6 +11,7 @@ public:
 	ManageWindow(QWidget* parent = Q_NULLPTR);
 
 private:
+	QSqlRecord _q_result;
 	Ui::ManageWindowClass ui;
 	void closeEvent(QCloseEvent* event);
 private slots:

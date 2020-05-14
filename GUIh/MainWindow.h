@@ -24,7 +24,7 @@ public slots:
 private:
 	QProgressDialog* _dialog_;
 	Ui::MainWindowClass ui;
-	//SaleWindow *sale_window;
+	SaleWindow *sale_window;
 	ManageWindow *manage_window;
 	ReportWindow *report_window;
 	void closeEvent(QCloseEvent* event);
