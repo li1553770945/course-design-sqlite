@@ -81,12 +81,12 @@ void ReportWindow::SetData()
 		//½µÐòÅÅÁÐ
 	}
 	QString limit = "  LIMIT " + QString::number(_items_one_page_) + " OFFSET " + QString::number((_page_ - 1) * _items_one_page_);
-	QString sql = "select name,isbn,author,publisher,qty,date_added,retail,wholesale from books" + order + limit;
+	QString sql = "SELECT name,isbn,author,publisher,date_added,qty,retail,wholesale FROM books" + order + limit;
 	report_model->setQuery(sql);
-	report_model->SetHeader();
+	
 
 	QSqlQuery query_max_row;
-	query_max_row.exec("select count(id) from books");
+	query_max_row.exec("SELECT count(id) FROM books");
 	query_max_row.next();
 	int max_row = query_max_row.value(0).toInt();
 	_max_page_=(max_row+_items_one_page_-1)/ _items_one_page_;
@@ -95,7 +95,7 @@ void ReportWindow::SetData()
 }
 void ReportWindow::FormatTableHeader()
 {
-	
+	report_model->SetHeader();
 	if (report_model->rowCount() != 0)
 	{
 		ui.Table->horizontalHeader()->setSectionResizeMode(0,QHeaderView::ResizeToContents);
