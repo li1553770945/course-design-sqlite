@@ -1,16 +1,21 @@
 #include "../GUIh/ReportWindow.h"
 #include "../h/global.h"
-#include "../model_h/books.h"
+#include "../model_h/report.h"
 #include <QtWidgets\qmessagebox.h>
+#include "qdebug.h"
 # pragma execution_character_set("utf-8")
 ReportWindow::ReportWindow(QWidget* parent) :QMainWindow(parent)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui.setupUi(this);
+	report_model = new ReportModel(this);
 	ui.Table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-	books = new BookModel(this);
-	ui.Table->setModel(books);
+	ui.Table->setModel(report_model);
 	SetData();
+	_page_ = 1;
+	ui.LineEditPage->setText("1");
+	ui.LabelSumPage->setText(QString::number(_max_page_));
+	
 }
 void ReportWindow::closeEvent(QCloseEvent* event)
 {
@@ -18,60 +23,35 @@ void ReportWindow::closeEvent(QCloseEvent* event)
 }
 void ReportWindow::on_CheckBoxName_clicked()
 {
-	if(ui.CheckBoxName->isChecked())
-		ui.Table->setColumnHidden(1, false);
-	else
-		ui.Table->setColumnHidden(1, true);
+	ui.Table->setColumnHidden(0, !ui.CheckBoxName->isChecked());
 }
 void ReportWindow::on_CheckBoxISBN_clicked()
 {
-	if (ui.CheckBoxISBN->isChecked())
-		ui.Table->setColumnHidden(2, false);
-	else
-		ui.Table->setColumnHidden(2, true);
+	ui.Table->setColumnHidden(1, !ui.CheckBoxISBN->isChecked());
 }
 void ReportWindow::on_CheckBoxAuthor_clicked()
 {
-	if (ui.CheckBoxAuthor->isChecked())
-		ui.Table->setColumnHidden(3, false);
-	else
-		ui.Table->setColumnHidden(3, true);
+	ui.Table->setColumnHidden(2, !ui.CheckBoxAuthor->isChecked());
 }
 void ReportWindow::on_CheckBoxPublisher_clicked()
 {
-	if (ui.CheckBoxPublisher->isChecked())
-		ui.Table->setColumnHidden(4, false);
-	else
-		ui.Table->setColumnHidden(4, true);
+	ui.Table->setColumnHidden(3, !ui.CheckBoxPublisher->isChecked());
 }
 void ReportWindow::on_CheckBoxDateAdded_clicked()
 {
-	if (ui.CheckBoxDateAdded->isChecked())
-		ui.Table->setColumnHidden(5, false);
-	else
-		ui.Table->setColumnHidden(5, true);
+	ui.Table->setColumnHidden(4, !ui.CheckBoxDateAdded->isChecked());
 }
 void ReportWindow::on_CheckBoxQty_clicked()
 {
-	if (ui.CheckBoxQty->isChecked())
-		ui.Table->setColumnHidden(6, false);
-	else
-		ui.Table->setColumnHidden(6, true);
+	ui.Table->setColumnHidden(5, !ui.CheckBoxQty->isChecked());
 }
-
 void ReportWindow::on_CheckBoxRetail_clicked()
 {
-	if (ui.CheckBoxRetail->isChecked())
-		ui.Table->setColumnHidden(7, false);
-	else
-		ui.Table->setColumnHidden(7, true);
+	ui.Table->setColumnHidden(6, !ui.CheckBoxRetail->isChecked());
 }
 void ReportWindow::on_CheckBoxWholesale_clicked()
 {
-	if (ui.CheckBoxWholesale->isChecked())
-		ui.Table->setColumnHidden(8, false);
-	else
-		ui.Table->setColumnHidden(8, true);
+	ui.Table->setColumnHidden(7, !ui.CheckBoxWholesale->isChecked());
 }
 void ReportWindow::on_ButtonFlush_clicked()
 {
@@ -79,94 +59,94 @@ void ReportWindow::on_ButtonFlush_clicked()
 }
 void ReportWindow::SetData()
 {
-	books->select();
-	ui.Table->setColumnHidden(0, true);
+	QString order=" ORDER BY";
+	if (ui.RadioName->isChecked())
+		order += " name_pinyin";
+	if (ui.RadioDateAdded->isChecked())
+		order += " date_added";
+	if (ui.RadioQty->isChecked())
+		order += " qty";
+	if (ui.RadioRetail->isChecked())
+		order += " retaill";
+	if (ui.RadioWholesale->isChecked())
+		order += " wholesale";
+	if (ui.RadioPositive->isChecked())
+	{
+		order += " ASC";
+		//升序排列
+	}
+	else
+	{
+		order += " DESC";
+		//降序排列
+	}
+	QString limit = "  LIMIT " + QString::number(_items_one_page_) + " OFFSET " + QString::number((_page_ - 1) * _items_one_page_);
+	QString sql = "SELECT name,isbn,author,publisher,date_added,qty,retail,wholesale FROM books" + order + limit;
+	report_model->setQuery(sql);
+	
+
+	QSqlQuery query_max_row;
+	query_max_row.exec("SELECT count(id) FROM books");
+	query_max_row.next();
+	int max_row = query_max_row.value(0).toInt();
+	_max_page_=(max_row+_items_one_page_-1)/ _items_one_page_;
+	ui.statusbar->showMessage("书库中共有"+QString::number(max_row)+"本书，每页显示"+QString::number(_items_one_page_)+"本书");
+	FormatTableHeader();
 }
-//void ReportWindow::Initialize()
-//{
-//	_max_page_ = (books.size() + _item_one_page_ - 1) / _item_one_page_;
-//	ui.LabelSumPage->setText(QString::number(_max_page_));
-//	ui.LineEditPage->setText(QString::number(1));
-//	_page_ = 1;
-//	Report::SetBookVec();
-//	on_ButtonSortConfirm_clicked();
-//	SetData();
-//}
-//void ReportWindow::on_ButtonPreviousPage_clicked()
-//{
-//	if (_page_ == 1)
-//	{
-//		QMessageBox box(QMessageBox::Information, "提示", "已经是第一页！");
-//		box.exec();
-//	}
-//	else
-//	{
-//		_page_--;
-//		SetData();
-//		ui.LineEditPage->setText(QString::number(_page_));
-//	}
-//}
-//void ReportWindow::on_ButtonNextPage_clicked()
-//{
-//	if (_page_ == _max_page_)
-//	{
-//		QMessageBox box(QMessageBox::Information, "提示", "已经是最后一页！");
-//		box.exec();
-//	}
-//	else
-//	{
-//		_page_++;
-//		SetData();
-//		ui.LineEditPage->setText(QString::number(_page_));
-//	}
-//
-//}
-//void ReportWindow::on_LineEditPage_returnPressed()
-//{
-//	int page = my_atoi(ui.LineEditPage->text().toLocal8Bit().data());
-//	if (page < 1||page>_max_page_)
-//	{
-//		char information[50];
-//		sprintf(information, "页数必须是1~%d之间的整数！",_max_page_);
-//		QMessageBox box(QMessageBox::Information, "提示", information);
-//		ui.LineEditPage->setText(QString::number(_page_));
-//		box.exec();
-//	}
-//	else
-//	{
-//		_page_ = page;
-//		SetData();
-//	}
-//}
-//void ReportWindow::on_ButtonSortConfirm_clicked()
-//{
-//	string key;
-//	if (ui.RadioName->isChecked())
-//	{
-//		key = "name";
-//	}
-//	if (ui.RadioQty->isChecked())
-//	{
-//		key = "qty";
-//	}
-//	if (ui.RadioDateAdded->isChecked())
-//	{
-//		key = "date_added";
-//	}
-//	if (ui.RadioRetail->isChecked())
-//	{
-//		key = "retail";
-//	}
-//	if (ui.RadioWholesale->isChecked())
-//	{
-//		key = "wholesale";
-//	}
-//	if (ui.RadioBackward->isChecked())
-//	{
-//		key = string("-") + key;
-//	}
-//	Report::Sort(key);
-//	_page_ = 1;
-//	ui.LineEditPage->setText(QString::number(1));
-//	SetData();
-//}
+void ReportWindow::FormatTableHeader()
+{
+	report_model->SetHeader();
+	if (report_model->rowCount() != 0)
+	{
+		ui.Table->horizontalHeader()->setSectionResizeMode(0,QHeaderView::ResizeToContents);
+	}
+}
+void ReportWindow::on_ButtonSortConfirm_clicked()
+{
+	SetData();
+}
+void ReportWindow::on_ButtonPreviousPage_clicked()
+{
+	if (_page_ == 1)
+	{
+		QMessageBox box(QMessageBox::Information, "提示", "当前已经是第一页！");
+		box.exec();
+		return;
+	}
+	else
+	{
+		_page_--;
+		SetData();
+		ui.LineEditPage->setText(QString::number(_page_));
+	}
+}
+void ReportWindow::on_ButtonNextPage_clicked()
+{
+	if (_page_ == _max_page_)
+	{
+		QMessageBox box(QMessageBox::Information, "提示", "当前已经是最后一页！");
+		box.exec();
+		return;
+	}
+	else
+	{
+		_page_++;
+		SetData();
+		ui.LineEditPage->setText(QString::number(_page_));
+	}
+}
+void ReportWindow::on_LineEditPage_returnPressed()
+{
+	int page = ui.LineEditPage->text().toInt();
+	if (page<=0||page>_max_page_)
+	{
+		QMessageBox box(QMessageBox::Information, "提示", "数量必须是1~"+QString::number(_max_page_)+"之间的整数");
+		box.exec();
+		return;
+	}
+	else
+	{
+		_page_ = page;
+		SetData();
+	}
+}

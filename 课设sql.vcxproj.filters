@@ -78,28 +78,34 @@
     <QtMoc Include="GUIh\ManageWindow.h">
       <Filter>Header Files\GUI</Filter>
     </QtMoc>
+    <QtMoc Include="GUIh\SaleWindow.h">
+      <Filter>Header Files\GUI</Filter>
+    </QtMoc>
+    <QtMoc Include="GUIh\BookInfoWindow.h">
+      <Filter>Header Files\GUI</Filter>
+    </QtMoc>
+    <QtMoc Include="GUIh\FindWindow.h">
+      <Filter>Header Files\GUI</Filter>
+    </QtMoc>
+    <QtMoc Include="model_h\Sale.h">
+      <Filter>Header Files\model</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="h\library.h">
+      <Filter>Header Files\library</Filter>
+    </ClInclude>
+    <ClInclude Include="model_h\find.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
     <ClInclude Include="h\global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="model_h\sqlite.h">
+    <ClInclude Include="h\sqlite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model_h\report.h">
       <Filter>Header Files\model</Filter>
-    </ClInclude>
-    <ClInclude Include="model_h\books.h">
-      <Filter>Header Files\model</Filter>
-    </ClInclude>
-    <ClInclude Include="GUIh\BookInfoWindow.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="GUIh\FindWindow.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="GUIh\SaleWindow.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="h\library.h">
-      <Filter>Header Files\library</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -130,17 +136,23 @@
     <ClCompile Include="cpp\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="model_cpp\sqlite.cpp">
-      <Filter>Source Files\model</Filter>
-    </ClCompile>
-    <ClCompile Include="model_cpp\books.cpp">
-      <Filter>Source Files\model</Filter>
-    </ClCompile>
     <ClCompile Include="cpp\BookData.cpp">
       <Filter>Source Files\book_data</Filter>
     </ClCompile>
     <ClCompile Include="cpp\TitleInfo.cpp">
       <Filter>Source Files\book_data</Filter>
+    </ClCompile>
+    <ClCompile Include="model_cpp\find.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\sqlite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model_cpp\report.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="model_cpp\sale.cpp">
+      <Filter>Source Files\model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
