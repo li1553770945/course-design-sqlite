@@ -4,17 +4,9 @@
 #include <qdebug.h>
 #include "../h/sqlite.h"
 #pragma execution_character_set("utf-8")
-ReportModel::ReportModel(QObject* parent=(QObject*)nullptr):QSqlTableModel(parent)
+ReportModel::ReportModel(QObject* parent=(QObject*)nullptr):QSqlQueryModel(parent)
 {
-    this->setTable("books");
-    this->setHeaderData(1, Qt::Horizontal, "书名");
-    this->setHeaderData(2, Qt::Horizontal, "ISBN");
-    this->setHeaderData(3, Qt::Horizontal, "作者");
-    this->setHeaderData(4, Qt::Horizontal, "出版社");
-    this->setHeaderData(5, Qt::Horizontal, "进货日期");
-    this->setHeaderData(6, Qt::Horizontal, "库存");
-    this->setHeaderData(7, Qt::Horizontal, "零售价");
-    this->setHeaderData(8, Qt::Horizontal, "批发价");
+    
 }
 QVariant ReportModel::data(const QModelIndex& item, int role) const
 {
@@ -25,5 +17,16 @@ QVariant ReportModel::data(const QModelIndex& item, int role) const
         return value;
     }
     return value;
+}
+void ReportModel::SetHeader()
+{
+    this->setHeaderData(0, Qt::Horizontal, "书名");
+    this->setHeaderData(1, Qt::Horizontal, "ISBN");
+    this->setHeaderData(2, Qt::Horizontal, "作者");
+    this->setHeaderData(3, Qt::Horizontal, "出版社");
+    this->setHeaderData(4, Qt::Horizontal, "进货日期");
+    this->setHeaderData(5, Qt::Horizontal, "库存");
+    this->setHeaderData(6, Qt::Horizontal, "零售价");
+    this->setHeaderData(7, Qt::Horizontal, "批发价");
 }
 

@@ -12,7 +12,7 @@ public:
 private:
 	ReportModel* report_model;
 	Ui::ReportWindowClass ui;
-	static const int _items_one_page_ = 1000;
+	static const int _items_one_page_ = 100;
 	int _max_page_;
 	int _page_=1;
 	void closeEvent(QCloseEvent* event);
