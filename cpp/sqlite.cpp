@@ -7,6 +7,7 @@
 #include <iostream>
 #include <io.h>
 #include <qsqlrecord.h>
+#include "../h/global.h"
 #pragma execution_character_set("utf-8")
 QSqlDatabase Sqlite::_database;
 bool Sqlite::Open()
@@ -37,7 +38,8 @@ bool Sqlite::CreateBooksTable()
 		"date_added TEXT,"
 		"qty INT,"
 		"retail REAL,"
-		"wholesale REAL)"))
+		"wholesale REAL,"
+		"name_pinyin TEXT)"))
 
 	{
 		qDebug() << "创建数据表出错！";
@@ -113,7 +115,7 @@ BookOpe::Result BookOpe::Insert(BookData& book)
 	if (QueryRow(string(book.GetISBN())) != -1)
 		return Result::Exist;
 	QSqlQuery query(Sqlite::_database);
-	query.prepare("insert into books(name,isbn,author,publisher,date_added,qty,retail,wholesale) VALUES (:name,:isbn,:author,:publisher,:date_added,:qty,:retail,:wholesale)");
+	query.prepare("insert into books(name,isbn,author,publisher,date_added,qty,retail,wholesale,name_pinyin) VALUES (:name,:isbn,:author,:publisher,:date_added,:qty,:retail,:wholesale,:name_pinyin)");
 	query.bindValue(":name", QString::fromLocal8Bit(book.GetName()));
 	query.bindValue(":isbn", book.GetISBN());
 	query.bindValue(":author", QString::fromLocal8Bit(book.GetAuth()));
@@ -122,6 +124,10 @@ BookOpe::Result BookOpe::Insert(BookData& book)
 	query.bindValue(":qty", book.GetQty());
 	query.bindValue(":retail", book.GetRetail());
 	query.bindValue(":wholesale", book.GetWholesale());
+	string name_pinyin;
+	ChineseConvertPy(book.GetName(), name_pinyin);
+	cout << name_pinyin;
+	query.bindValue(":name_pinyin", name_pinyin.data());
 	if (query.exec())
 		return Result::Success;
 	else

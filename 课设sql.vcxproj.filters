@@ -142,9 +142,6 @@
     <ClCompile Include="cpp\TitleInfo.cpp">
       <Filter>Source Files\book_data</Filter>
     </ClCompile>
-    <ClCompile Include="model_cpp\Sale.cpp">
-      <Filter>Source Files\model</Filter>
-    </ClCompile>
     <ClCompile Include="model_cpp\find.cpp">
       <Filter>Source Files\model</Filter>
     </ClCompile>
@@ -152,6 +149,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="model_cpp\report.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="model_cpp\sale.cpp">
       <Filter>Source Files\model</Filter>
     </ClCompile>
   </ItemGroup>

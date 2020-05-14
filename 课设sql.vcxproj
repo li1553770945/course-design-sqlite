@@ -63,7 +63,7 @@
     <ClCompile Include="GUIcpp\SaleWindow.cpp" />
     <ClCompile Include="model_cpp\report.cpp" />
     <ClCompile Include="model_cpp\find.cpp" />
-    <ClCompile Include="model_cpp\Sale.cpp" />
+    <ClCompile Include="model_cpp\sale.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="qrc\About.qrc" />

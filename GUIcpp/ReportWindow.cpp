@@ -2,16 +2,20 @@
 #include "../h/global.h"
 #include "../model_h/report.h"
 #include <QtWidgets\qmessagebox.h>
+#include "qdebug.h"
 # pragma execution_character_set("utf-8")
 ReportWindow::ReportWindow(QWidget* parent) :QMainWindow(parent)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui.setupUi(this);
-	report_model = new BookModelNotSort(this);
-	sort_model = new ReportModel(this,report_model);
+	report_model = new ReportModel(this);
 	ui.Table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-	ui.Table->setModel(sort_model);
+	ui.Table->setModel(report_model);
 	SetData();
+	ui.LineEditPage->setText("1");
+	_max_page_ = (report_model->rowCount() + _items_one_page_ - 1) / _items_one_page_;
+	ui.LabelSumPage->setText(QString::number(_max_page_));
+	
 }
 void ReportWindow::closeEvent(QCloseEvent* event)
 {
@@ -80,9 +84,9 @@ void ReportWindow::on_ButtonFlush_clicked()
 }
 void ReportWindow::SetData()
 {
-	int column = 1;
+	int column=0;
 	if (ui.RadioName->isChecked())
-		column = 1;
+		column = 9;
 	if (ui.RadioDateAdded->isChecked())
 		column = 5;
 	if (ui.RadioQty->isChecked())
@@ -93,16 +97,16 @@ void ReportWindow::SetData()
 		column = 8;
 	if (ui.RadioPositive->isChecked())
 	{
-
-		sort_model->sort(column, Qt::AscendingOrder);
+		report_model->sort(column, Qt::AscendingOrder);
 		//升序排列
 	}
 	else
 	{
-		sort_model->sort(column, Qt::DescendingOrder);
+		report_model->sort(column, Qt::DescendingOrder);
 		//降序排列
 	}
 	report_model->select();
+	_max_page_ = (report_model->rowCount()+ _items_one_page_ -1)/_items_one_page_;//计算最大页数
 	FormatTableHeader();
 }
 void ReportWindow::FormatTableHeader()
@@ -113,9 +117,42 @@ void ReportWindow::FormatTableHeader()
 		ui.Table->horizontalHeader()->setSectionResizeMode(1,QHeaderView::ResizeToContents);
 	}
 	ui.Table->setColumnHidden(0, true);
+	ui.Table->setColumnHidden(9, true);
 }
 void ReportWindow::on_ButtonSortConfirm_clicked()
 {
 	
 	SetData();
+}
+void ReportWindow::on_ButtonPreviousPage_clicked()
+{
+	if (_page_ == 1)
+	{
+		QMessageBox box(QMessageBox::Information, "提示", "当前已经是第一页！");
+		box.exec();
+		return;
+	}
+	else
+	{
+		_page_--;
+		ui.LineEditPage->setText(QString::number(_page_));
+	}
+}
+void ReportWindow::on_ButtonNextPage_clicked()
+{
+	if (_page_ == _max_page_)
+	{
+		QMessageBox box(QMessageBox::Information, "提示", "当前已经是最后一页！");
+		box.exec();
+		return;
+	}
+	else
+	{
+		_page_++;
+		ui.LineEditPage->setText(QString::number(_page_));
+	}
+}
+void ReportWindow::on_LineEditPage_returnPressed()
+{
+
 }

@@ -53,6 +53,7 @@ void FindWindow::on_LineEditContent_returnPressed()
 void FindWindow::FormatTableHeader()
 {
 	ui.Table->setColumnHidden(0, true);
+	ui.Table->setColumnHidden(9, true);
 	if (find_model->rowCount() != 0)
 	{
 		ui.Table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
