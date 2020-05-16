@@ -22,7 +22,6 @@ private slots:
 	void on_ISBNInput_returnPressed();
 	void on_ButtonFaxConfirm_clicked();
 	void on_LineEditFax_returnPressed();
-	
 signals:
 	void Close(std::string);
 	
