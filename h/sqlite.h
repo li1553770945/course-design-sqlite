@@ -7,7 +7,7 @@
 #include "../h/library.h"
 #include <QSqlError>
 #include <QSqlQuery>
-class Sqlite {
+class Sqlite {//数据库的一些操作
 public:
 	static QSqlDatabase _database;//数据库
 	static bool Open();//打开或创建链接
@@ -15,7 +15,7 @@ public:
 	static bool Close();//关闭连接
 	static void LoadDataBase();//控制打开和检查的函数
 };
-class BookOpe {
+class BookOpe {//书的一些操作
 public:
 	enum class Result { Success, Fail, Exist };//用于标识插入/删除的结果
 	static Result Insert(BookData&);//插入一本书，如果存在返回Result::Exit，未知错误失败返回Result::Fail
