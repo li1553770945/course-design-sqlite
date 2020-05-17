@@ -20,7 +20,7 @@ void ManageWindow::closeEvent(QCloseEvent* event)
 }
 void ManageWindow::on_ButtonAdd_clicked()
 {
-	BookData book;
+	BookData book;//其实之所以采用这样的方式进行有效性检验，是因为之前写的没用数据库，现在为了方便，直接用原来的了
 	try
 	{
 		QByteArray ba = ui.NameAdd->text().toLocal8Bit();
@@ -36,7 +36,7 @@ void ManageWindow::on_ButtonAdd_clicked()
 		ba = ui.DateAddedAdd->date().toString("yyyy-MM-dd").toLatin1(); // must
 		book.SetDateAdded(ba.data());//设置进货日期
 	}
-	catch (const char* err)
+	catch (const char* err)//如果输入的数据有问题
 	{
 		QMessageBox box(QMessageBox::Warning, "提示", QString::fromLocal8Bit(err));
 		box.exec();

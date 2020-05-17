@@ -27,6 +27,7 @@ void MainWindow::LoadFile()
 	try 
 	{
 		Sqlite::LoadDataBase();//尝试加载数据库
+		LoadConfig();//尝试加载配置文件（税率等等）
 	}
 	catch (QString err)
 	{
@@ -34,7 +35,7 @@ void MainWindow::LoadFile()
 		box.exec();
 		exit(EXIT_FAILURE);
 	}
-	LoadConfig();
+	
 }
 void MainWindow::on_ButtonSale_clicked()
 {
@@ -100,21 +101,20 @@ void MainWindow::on_ButtonExit_clicked()//点击关闭按钮
 }
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-	if (manage_window != NULL || sale_window != NULL || report_window != NULL)
+	if (manage_window != NULL || sale_window != NULL || report_window != NULL)//子窗口还有没关闭的，阻止主窗口关闭
 	{
 		QMessageBox box(QMessageBox::Warning, "错误", "请先关闭已打开的子窗口！");
 		box.exec();
 		event->ignore();
 		return;
 	}
-	QMessageBox messageBox(QMessageBox::Warning, "警告", "您确定要退出吗?", QMessageBox::Yes | QMessageBox::No, NULL);
+	QMessageBox messageBox(QMessageBox::Warning, "警告", "您确定要退出吗?", QMessageBox::Yes | QMessageBox::No, NULL);//弹窗确认
 	switch (messageBox.exec())
 	{
 	case QMessageBox::Yes:
-	{
-		Sqlite::Close();
-		exit(0);
-	}
+	
+		Sqlite::Close();//关闭数据库连接
+		break;
 	default:
 		event->ignore();
 	}
