@@ -114,6 +114,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
 	case QMessageBox::Yes:
 	
 		Sqlite::Close();//关闭数据库连接
+		exit(EXIT_SUCCESS);
 		break;
 	default:
 		event->ignore();
