@@ -10,6 +10,7 @@
 #include <qthread.h>
 #include "../h/sqlite.h"
 #include <qdebug.h>
+#include <qfiledialog.h>
 # pragma execution_character_set("utf-8")
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -138,6 +139,27 @@ void MainWindow::CloseSon(std::string name)//子窗口关闭，要将本窗口的指针置位NUL
 }
 void MainWindow::on_ActionAbout_triggered()//关于窗口
 {
-	AboutWindow* about_window = new AboutWindow;
+	AboutWindow* about_window = new AboutWindow(this);
 	about_window->exec();
+}
+void MainWindow::on_ActionImportExcel_triggered()
+{
+	//定义文件对话框类
+	QFileDialog* file_dialog = new QFileDialog(this);
+	file_dialog->setWindowTitle(QStringLiteral("选中文件"));
+	file_dialog->setDirectory(".");
+	//设置文件过滤器
+	file_dialog->setNameFilter("Excel文件(*.xls *.xlsx)");
+	//设置视图模式
+	file_dialog->setViewMode(QFileDialog::Detail);
+	//打印所有选择的文件的路径
+	QStringList file_names;
+	if (file_dialog->exec()) {
+		file_names = file_dialog->selectedFiles();
+	}
+	if(file_names.length())
+		QString file_name = file_names[0];
+}
+void MainWindow::on_ActionExportExcel_triggered()
+{
 }

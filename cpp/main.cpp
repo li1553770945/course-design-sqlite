@@ -2,7 +2,7 @@
 #include <qtranslator.h>
 #include "../h/global.h"
 using namespace std;
-int WinMain(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 	MainWindow w;
