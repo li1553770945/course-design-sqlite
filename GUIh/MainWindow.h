@@ -20,6 +20,8 @@ public slots:
 	void on_ButtonExit_clicked();//点击关闭按钮时，调用this->close()函数
 	void CloseSon(std::string);//控制子窗口指针，关闭时将指针变为NULL
 	void on_ActionAbout_triggered();//点击菜单栏关于时，打开帮助窗口
+	void on_ActionImportExcel_triggered();//导入excel
+	void on_ActionExportExcel_triggered();//导出excel
 
 private:
 	Ui::MainWindowClass ui;

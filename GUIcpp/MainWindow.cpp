@@ -4,12 +4,16 @@
 #include "../GUIh/ManageWindow.h"
 #include "../GUIh/AboutWindow.h"
 #include "../h/global.h"
+#include "../h/library.h"
 #include <qmessagebox.h>
 #include <QCloseEvent> 
 #include <QProgressDialog>
 #include <qthread.h>
 #include "../h/sqlite.h"
 #include <qdebug.h>
+#include <qfiledialog.h>
+#include <xlnt/xlnt.hpp>
+#include <Windows.h>
 # pragma execution_character_set("utf-8")
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -114,6 +118,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
 	case QMessageBox::Yes:
 	
 		Sqlite::Close();//关闭数据库连接
+		exit(EXIT_SUCCESS);
 		break;
 	default:
 		event->ignore();
@@ -137,6 +142,135 @@ void MainWindow::CloseSon(std::string name)//子窗口关闭，要将本窗口的指针置位NUL
 }
 void MainWindow::on_ActionAbout_triggered()//关于窗口
 {
-	AboutWindow* about_window = new AboutWindow;
+	AboutWindow* about_window = new AboutWindow(this);
 	about_window->exec();
 }
+
+void MainWindow::on_ActionImportExcel_triggered()
+{
+	
+	//定义文件对话框类
+	QFileDialog* file_dialog = new QFileDialog(this);
+	file_dialog->setWindowTitle(QStringLiteral("选中文件"));
+	file_dialog->setDirectory(".");
+	//设置文件过滤器
+	file_dialog->setNameFilter("Excel文件(*.xlsx)");
+	//设置视图模式
+	file_dialog->setViewMode(QFileDialog::Detail);
+	//打印所有选择的文件的路径
+	QStringList file_names;
+	if (file_dialog->exec()) {
+		file_names = file_dialog->selectedFiles();
+	}
+	QString file_name;
+	if (file_names.length())
+		 file_name = file_names[0];
+	else
+		return;
+	xlnt::workbook wb;
+	wb.load(file_name.toStdString());
+	xlnt::worksheet ws = wb.active_sheet();
+	int row = 2;
+	int success=0, fail = 0;
+	while (true)
+	{
+		row++;
+		if (!ws.cell(1, row).has_value())
+			break;
+		for (int i = 1; i <= 8; i++)
+		{
+			BookData book;
+			try
+			{
+				book.SetName(ws.cell(1,row).to_string().c_str());//设置书名
+				book.SetISBN(ws.cell(2, row).to_string().c_str());
+				book.SetAuthor(ws.cell(3, row).to_string().c_str());
+				book.SetPub(ws.cell(4, row).to_string().c_str());//设置出版社
+				book.SetDateAdded(ws.cell(5, row).to_string().c_str());//设置进货日期
+				book.SetQty(my_atoi(ws.cell(6, row).to_string().c_str()));//设置库存
+				book.SetRetail(my_atof(ws.cell(7, row).to_string().c_str()));//设置零售价
+				book.SetWholesale(my_atof(ws.cell(8, row).to_string().c_str()));//设置批发价
+				
+			}
+			catch (const char* err)//如果输入的数据有问题
+			{
+				fail++;
+				break;
+			}
+			BookOpe::Result result = BookOpe::Insert(book);
+			if (result == BookOpe::Result::Success)
+			{
+				success++;
+			}
+			else if (result == BookOpe::Result::Exist)
+			{
+				fail++;
+				break;
+			}
+			else if (result == BookOpe::Result::Fail)
+			{
+				fail++;
+				break;
+			}
+		}
+
+		
+	}
+	string message = "共找到" + to_string(row - 3) + "条数据,成功" + to_string(success) + "条,失败" + to_string(fail) + "条";
+	QMessageBox box(QMessageBox::Information, "提示", QString::fromStdString(message));
+	box.exec();
+
+}
+void MainWindow::on_ActionExportExcel_triggered()
+{
+	
+	string GetDateTime();
+	xlnt::workbook wb;
+	xlnt::worksheet ws = wb.active_sheet();
+	ws.merge_cells("A1:H1");
+	xlnt::alignment center;
+	center.horizontal(xlnt::horizontal_alignment::center);
+	ws.cell(1, 1).alignment(center);
+	ws.cell(1, 1).value(string("书库管理系统导出 ") + GetDateTime());
+	ws.cell(1,2).value("书名");
+	ws.cell(2,2).value("ISBN");
+	ws.cell(3,2).value("作者");
+	ws.cell(4,2).value("出版社");
+	ws.cell(5,2).value("进货日期");
+	ws.cell(6,2).value("库存");
+	ws.cell(7,2).value("零售价");
+	ws.cell(8,2).value("批发价");
+	QString sql = "SELECT name,isbn,author,publisher,date_added,qty,retail,wholesale FROM books";
+	QSqlQuery query;
+	query.exec(sql);
+	int row = 3;
+	while (query.next())
+	{
+		ws.cell(1, row).value(query.value(0).toString().toStdString());
+		ws.cell(2, row).value(query.value(1).toString().toStdString());
+		ws.cell(3, row).value(query.value(2).toString().toStdString());
+		ws.cell(4, row).value(query.value(3).toString().toStdString());
+		ws.cell(5, row).value(query.value(4).toString().toStdString());
+		ws.cell(6, row).value(query.value(5).toInt());
+		ws.cell(7, row).value(query.value(6).toDouble());
+		ws.cell(8, row).value(query.value(7).toDouble());
+		row++;
+	}
+	QString file_path = QFileDialog::getSaveFileName(this, "保存文件", "../books", "EXCEL文件(*.xlsx)");
+	if (!file_path.isEmpty())
+	{
+		wb.save(file_path.toStdString());
+		QMessageBox box(QMessageBox::Information, "提示", "导出成功！");
+		box.exec();
+	}
+	
+}
+string GetDateTime()
+{
+	time_t timep;
+	time(&timep);
+	char tmp[64];
+	strftime(tmp, sizeof(tmp), "%Y-%m-%d %H:%M:%S", localtime(&timep));
+	return tmp;
+}
+
