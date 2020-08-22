@@ -12,23 +12,25 @@
 #include "../h/sqlite.h"
 #include <qdebug.h>
 #include <qfiledialog.h>
-#include <xlnt/xlnt.hpp>
 #include <Windows.h>
+#include "../h/libxl/libxl.h"
 # pragma execution_character_set("utf-8")
-MainWindow::MainWindow(QWidget *parent)
+using namespace libxl;
+#pragma comment(lib,"libxl.lib")
+MainWindow::MainWindow(QWidget* parent)
 	: QMainWindow(parent)
 {
-	sale_window=NULL;
+	sale_window = NULL;
 	manage_window = NULL;
-	report_window=NULL;
+	report_window = NULL;
 	this->setAttribute(Qt::WA_DeleteOnClose);
 	LoadFile();
 	ui.setupUi(this);
-	
+
 }
 void MainWindow::LoadFile()
 {
-	try 
+	try
 	{
 		Sqlite::LoadDataBase();//尝试加载数据库
 		LoadConfig();//尝试加载配置文件（税率等等）
@@ -39,7 +41,7 @@ void MainWindow::LoadFile()
 		box.exec();
 		exit(EXIT_FAILURE);
 	}
-	
+
 }
 void MainWindow::on_ButtonSale_clicked()
 {
@@ -51,11 +53,11 @@ void MainWindow::on_ButtonSale_clicked()
 	}
 	if (sale_window == NULL)//如果为空，说明还没有打开过这个窗口，那么就新建一个并显示
 	{
-		
+
 		sale_window = new SaleWindow(this);
 		connect(sale_window, SIGNAL(Close(std::string)), this, SLOT(CloseSon(std::string)));
 		sale_window->show();
-		
+
 	}
 	else//如果已经打开了，不再重新创建，而是显示原来的
 	{
@@ -116,14 +118,14 @@ void MainWindow::closeEvent(QCloseEvent* event)
 	switch (messageBox.exec())
 	{
 	case QMessageBox::Yes:
-	
+
 		Sqlite::Close();//关闭数据库连接
 		exit(EXIT_SUCCESS);
 		break;
 	default:
 		event->ignore();
 	}
-	
+
 }
 void MainWindow::CloseSon(std::string name)//子窗口关闭，要将本窗口的指针置位NULL
 {
@@ -135,7 +137,7 @@ void MainWindow::CloseSon(std::string name)//子窗口关闭，要将本窗口的指针置位NUL
 	{
 		manage_window = NULL;
 	}
-	else if  (name == "report")
+	else if (name == "report")
 	{
 		report_window = NULL;
 	}
@@ -148,83 +150,82 @@ void MainWindow::on_ActionAbout_triggered()//关于窗口
 
 void MainWindow::on_ActionImportExcel_triggered()
 {
-	
-	//定义文件对话框类
-	QFileDialog* file_dialog = new QFileDialog(this);
-	file_dialog->setWindowTitle(QStringLiteral("选中文件"));
-	file_dialog->setDirectory(".");
-	//设置文件过滤器
-	file_dialog->setNameFilter("Excel文件(*.xlsx)");
-	//设置视图模式
-	file_dialog->setViewMode(QFileDialog::Detail);
-	//打印所有选择的文件的路径
-	QStringList file_names;
-	if (file_dialog->exec()) {
-		file_names = file_dialog->selectedFiles();
-	}
-	QString file_name;
-	if (file_names.length())
-		 file_name = file_names[0];
-	else
-		return;
-	xlnt::workbook wb;
-	wb.load(file_name.toStdString());
-	xlnt::worksheet ws = wb.active_sheet();
-	int row = 2;
-	int success=0, fail = 0;
-	while (true)
-	{
-		row++;
-		if (!ws.cell(1, row).has_value())
-			break;
-		for (int i = 1; i <= 8; i++)
-		{
-			BookData book;
-			try
-			{
-				book.SetName(ws.cell(1,row).to_string().c_str());//设置书名
-				book.SetISBN(ws.cell(2, row).to_string().c_str());
-				book.SetAuthor(ws.cell(3, row).to_string().c_str());
-				book.SetPub(ws.cell(4, row).to_string().c_str());//设置出版社
-				book.SetDateAdded(ws.cell(5, row).to_string().c_str());//设置进货日期
-				book.SetQty(my_atoi(ws.cell(6, row).to_string().c_str()));//设置库存
-				book.SetRetail(my_atof(ws.cell(7, row).to_string().c_str()));//设置零售价
-				book.SetWholesale(my_atof(ws.cell(8, row).to_string().c_str()));//设置批发价
-				
-			}
-			catch (const char* err)//如果输入的数据有问题
-			{
-				fail++;
-				break;
-			}
-			BookOpe::Result result = BookOpe::Insert(book);
-			if (result == BookOpe::Result::Success)
-			{
-				success++;
-			}
-			else if (result == BookOpe::Result::Exist)
-			{
-				fail++;
-				break;
-			}
-			else if (result == BookOpe::Result::Fail)
-			{
-				fail++;
-				break;
-			}
-		}
 
-		
-	}
-	string message = "共找到" + to_string(row - 3) + "条数据,成功" + to_string(success) + "条,失败" + to_string(fail) + "条";
-	QMessageBox box(QMessageBox::Information, "提示", QString::fromStdString(message));
-	box.exec();
+	////定义文件对话框类
+	//QFileDialog* file_dialog = new QFileDialog(this);
+	//file_dialog->setWindowTitle(QStringLiteral("选中文件"));
+	//file_dialog->setDirectory(".");
+	////设置文件过滤器
+	//file_dialog->setNameFilter("Excel文件(*.xlsx)");
+	////设置视图模式
+	//file_dialog->setViewMode(QFileDialog::Detail);
+	////打印所有选择的文件的路径
+	//QStringList file_names;
+	//if (file_dialog->exec()) {
+	//	file_names = file_dialog->selectedFiles();
+	//}
+	//QString file_name;
+	//if (file_names.length())
+	//	 file_name = file_names[0];
+	//else
+	//	return;
+	//xlnt::workbook wb;
+	//wb.load(file_name.toStdString());
+	//xlnt::worksheet ws = wb.active_sheet();
+	//int row = 2;
+	//int success=0, fail = 0;
+	//while (true)
+	//{
+	//	row++;
+	//	if (!ws.cell(1, row).has_value())
+	//		break;
+	//	for (int i = 1; i <= 8; i++)
+	//	{
+	//		BookData book;
+	//		try
+	//		{
+	//			book.SetName(ws.cell(1,row).to_string().c_str());//设置书名
+	//			book.SetISBN(ws.cell(2, row).to_string().c_str());
+	//			book.SetAuthor(ws.cell(3, row).to_string().c_str());
+	//			book.SetPub(ws.cell(4, row).to_string().c_str());//设置出版社
+	//			book.SetDateAdded(ws.cell(5, row).to_string().c_str());//设置进货日期
+	//			book.SetQty(my_atoi(ws.cell(6, row).to_string().c_str()));//设置库存
+	//			book.SetRetail(my_atof(ws.cell(7, row).to_string().c_str()));//设置零售价
+	//			book.SetWholesale(my_atof(ws.cell(8, row).to_string().c_str()));//设置批发价
+	//			
+	//		}
+	//		catch (const char* err)//如果输入的数据有问题
+	//		{
+	//			fail++;
+	//			break;
+	//		}
+	//		BookOpe::Result result = BookOpe::Insert(book);
+	//		if (result == BookOpe::Result::Success)
+	//		{
+	//			success++;
+	//		}
+	//		else if (result == BookOpe::Result::Exist)
+	//		{
+	//			fail++;
+	//			break;
+	//		}
+	//		else if (result == BookOpe::Result::Fail)
+	//		{
+	//			fail++;
+	//			break;
+	//		}
+	//	}
 
+	//	
+	//}
+	//string message = "共找到" + to_string(row - 3) + "条数据,成功" + to_string(success) + "条,失败" + to_string(fail) + "条";
+	//QMessageBox box(QMessageBox::Information, "提示", QString::fromStdString(message));
+	//box.exec();
 }
 void MainWindow::on_ActionExportExcel_triggered()
 {
-	
-	string GetDateTime();
+
+	/*string GetDateTime();
 	xlnt::workbook wb;
 	xlnt::worksheet ws = wb.active_sheet();
 	ws.merge_cells("A1:H1");
@@ -262,8 +263,8 @@ void MainWindow::on_ActionExportExcel_triggered()
 		wb.save(file_path.toStdString());
 		QMessageBox box(QMessageBox::Information, "提示", "导出成功！");
 		box.exec();
-	}
-	
+	}*/
+
 }
 string GetDateTime()
 {
