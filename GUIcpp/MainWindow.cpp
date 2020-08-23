@@ -1,4 +1,4 @@
-#include "../GUIh/MainWindow.h"
+ï»¿#include "../GUIh/MainWindow.h"
 #include "../GUIh/SaleWindow.h"
 #include "../GUIh/ReportWindow.h"
 #include "../GUIh/ManageWindow.h"
@@ -12,62 +12,66 @@
 #include "../h/sqlite.h"
 #include <qdebug.h>
 #include <qfiledialog.h>
-#include <xlnt/xlnt.hpp>
 #include <Windows.h>
-# pragma execution_character_set("utf-8")
-MainWindow::MainWindow(QWidget *parent)
+#include "../h/libxl/libxl.h"
+using namespace libxl;
+#pragma comment(lib,"libxl.lib")
+#include <qtextcodec.h>
+
+
+MainWindow::MainWindow(QWidget* parent)
 	: QMainWindow(parent)
 {
-	sale_window=NULL;
+	sale_window = NULL;
 	manage_window = NULL;
-	report_window=NULL;
+	report_window = NULL;
 	this->setAttribute(Qt::WA_DeleteOnClose);
 	LoadFile();
 	ui.setupUi(this);
-	
+
 }
 void MainWindow::LoadFile()
 {
-	try 
+	try
 	{
-		Sqlite::LoadDataBase();//³¢ÊÔ¼ÓÔØÊý¾Ý¿â
-		LoadConfig();//³¢ÊÔ¼ÓÔØÅäÖÃÎÄ¼þ£¨Ë°ÂÊµÈµÈ£©
+		Sqlite::LoadDataBase();//å°è¯•åŠ è½½æ•°æ®åº“
+		LoadConfig();//å°è¯•åŠ è½½é…ç½®æ–‡ä»¶ï¼ˆç¨ŽçŽ‡ç­‰ç­‰ï¼‰
 	}
 	catch (QString err)
 	{
-		QMessageBox box(QMessageBox::Critical, "´íÎó", err);
+		QMessageBox box(QMessageBox::Critical, u8"é”™è¯¯", err);
 		box.exec();
 		exit(EXIT_FAILURE);
 	}
-	
+
 }
 void MainWindow::on_ButtonSale_clicked()
 {
-	if (manage_window != NULL)//ÎªÁË·ÀÖ¹ÊÕÒøµÄÍ¬Ê±½øÐÐÐÞ¸Ä£¬¹æ¶¨ÊÕÒøºÍ¹ÜÀí´°¿ÚÖÇÄÜÍ¬Ê±´ò¿ªÒ»¸ö
+	if (manage_window != NULL)//ä¸ºäº†é˜²æ­¢æ”¶é“¶çš„åŒæ—¶è¿›è¡Œä¿®æ”¹ï¼Œè§„å®šæ”¶é“¶å’Œç®¡ç†çª—å£æ™ºèƒ½åŒæ—¶æ‰“å¼€ä¸€ä¸ª
 	{
-		QMessageBox box(QMessageBox::Information, "ÌáÊ¾", "ÇëÏÈ¹Ø±Õ¹ÜÀí´°¿Ú£¡");
+		QMessageBox box(QMessageBox::Information, u8"æç¤º", u8"è¯·å…ˆå…³é—­ç®¡ç†çª—å£ï¼");
 		box.exec();
 		return;
 	}
-	if (sale_window == NULL)//Èç¹ûÎª¿Õ£¬ËµÃ÷»¹Ã»ÓÐ´ò¿ª¹ýÕâ¸ö´°¿Ú£¬ÄÇÃ´¾ÍÐÂ½¨Ò»¸ö²¢ÏÔÊ¾
+	if (sale_window == NULL)//å¦‚æžœä¸ºç©ºï¼Œè¯´æ˜Žè¿˜æ²¡æœ‰æ‰“å¼€è¿‡è¿™ä¸ªçª—å£ï¼Œé‚£ä¹ˆå°±æ–°å»ºä¸€ä¸ªå¹¶æ˜¾ç¤º
 	{
-		
+
 		sale_window = new SaleWindow(this);
 		connect(sale_window, SIGNAL(Close(std::string)), this, SLOT(CloseSon(std::string)));
 		sale_window->show();
-		
+
 	}
-	else//Èç¹ûÒÑ¾­´ò¿ªÁË£¬²»ÔÙÖØÐÂ´´½¨£¬¶øÊÇÏÔÊ¾Ô­À´µÄ
+	else//å¦‚æžœå·²ç»æ‰“å¼€äº†ï¼Œä¸å†é‡æ–°åˆ›å»ºï¼Œè€Œæ˜¯æ˜¾ç¤ºåŽŸæ¥çš„
 	{
 		sale_window->showNormal();
 		sale_window->activateWindow();
 	}
 }
-void MainWindow::on_ButtonManage_clicked()//ºÍÊÕÒøÄ£¿éÍ¬Àí
+void MainWindow::on_ButtonManage_clicked()//å’Œæ”¶é“¶æ¨¡å—åŒç†
 {
 	if (sale_window != NULL)
 	{
-		QMessageBox box(QMessageBox::Information, "ÌáÊ¾", "ÇëÏÈ¹Ø±ÕÊÕÒø´°¿Ú£¡");
+		QMessageBox box(QMessageBox::Information, u8"æç¤º", u8"è¯·å…ˆå…³é—­æ”¶é“¶çª—å£ï¼");
 		box.exec();
 		return;
 	}
@@ -99,33 +103,33 @@ void MainWindow::on_ButtonReport_clicked()
 		report_window->activateWindow();
 	}
 }
-void MainWindow::on_ButtonExit_clicked()//µã»÷¹Ø±Õ°´Å¥
+void MainWindow::on_ButtonExit_clicked()//ç‚¹å‡»å…³é—­æŒ‰é’®
 {
 	this->close();
 }
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-	if (manage_window != NULL || sale_window != NULL || report_window != NULL)//×Ó´°¿Ú»¹ÓÐÃ»¹Ø±ÕµÄ£¬×èÖ¹Ö÷´°¿Ú¹Ø±Õ
+	if (manage_window != NULL || sale_window != NULL || report_window != NULL)//å­çª—å£è¿˜æœ‰æ²¡å…³é—­çš„ï¼Œé˜»æ­¢ä¸»çª—å£å…³é—­
 	{
-		QMessageBox box(QMessageBox::Warning, "´íÎó", "ÇëÏÈ¹Ø±ÕÒÑ´ò¿ªµÄ×Ó´°¿Ú£¡");
+		QMessageBox box(QMessageBox::Warning, u8"é”™è¯¯", u8"è¯·å…ˆå…³é—­å·²æ‰“å¼€çš„å­çª—å£ï¼");
 		box.exec();
 		event->ignore();
 		return;
 	}
-	QMessageBox messageBox(QMessageBox::Warning, "¾¯¸æ", "ÄúÈ·¶¨ÒªÍË³öÂð?", QMessageBox::Yes | QMessageBox::No, NULL);//µ¯´°È·ÈÏ
+	QMessageBox messageBox(QMessageBox::Warning, u8"è­¦å‘Š", u8"æ‚¨ç¡®å®šè¦é€€å‡ºå—?", QMessageBox::Yes | QMessageBox::No, NULL);//å¼¹çª—ç¡®è®¤
 	switch (messageBox.exec())
 	{
 	case QMessageBox::Yes:
-	
-		Sqlite::Close();//¹Ø±ÕÊý¾Ý¿âÁ¬½Ó
+
+		Sqlite::Close();//å…³é—­æ•°æ®åº“è¿žæŽ¥
 		exit(EXIT_SUCCESS);
 		break;
 	default:
 		event->ignore();
 	}
-	
+
 }
-void MainWindow::CloseSon(std::string name)//×Ó´°¿Ú¹Ø±Õ£¬Òª½«±¾´°¿ÚµÄÖ¸ÕëÖÃÎ»NULL
+void MainWindow::CloseSon(std::string name)//å­çª—å£å…³é—­ï¼Œè¦å°†æœ¬çª—å£çš„æŒ‡é’ˆç½®ä½NULL
 {
 	if (name == "sale")
 	{
@@ -135,12 +139,12 @@ void MainWindow::CloseSon(std::string name)//×Ó´°¿Ú¹Ø±Õ£¬Òª½«±¾´°¿ÚµÄÖ¸ÕëÖÃÎ»NUL
 	{
 		manage_window = NULL;
 	}
-	else if  (name == "report")
+	else if (name == "report")
 	{
 		report_window = NULL;
 	}
 }
-void MainWindow::on_ActionAbout_triggered()//¹ØÓÚ´°¿Ú
+void MainWindow::on_ActionAbout_triggered()//å…³äºŽçª—å£
 {
 	AboutWindow* about_window = new AboutWindow(this);
 	about_window->exec();
@@ -148,122 +152,138 @@ void MainWindow::on_ActionAbout_triggered()//¹ØÓÚ´°¿Ú
 
 void MainWindow::on_ActionImportExcel_triggered()
 {
-	
-	//¶¨ÒåÎÄ¼þ¶Ô»°¿òÀà
-	QFileDialog* file_dialog = new QFileDialog(this);
-	file_dialog->setWindowTitle(QStringLiteral("Ñ¡ÖÐÎÄ¼þ"));
-	file_dialog->setDirectory(".");
-	//ÉèÖÃÎÄ¼þ¹ýÂËÆ÷
-	file_dialog->setNameFilter("ExcelÎÄ¼þ(*.xlsx)");
-	//ÉèÖÃÊÓÍ¼Ä£Ê½
-	file_dialog->setViewMode(QFileDialog::Detail);
-	//´òÓ¡ËùÓÐÑ¡ÔñµÄÎÄ¼þµÄÂ·¾¶
-	QStringList file_names;
-	if (file_dialog->exec()) {
-		file_names = file_dialog->selectedFiles();
-	}
-	QString file_name;
-	if (file_names.length())
-		 file_name = file_names[0];
-	else
-		return;
-	xlnt::workbook wb;
-	wb.load(file_name.toStdString());
-	xlnt::worksheet ws = wb.active_sheet();
-	int row = 2;
-	int success=0, fail = 0;
-	while (true)
-	{
-		row++;
-		if (!ws.cell(1, row).has_value())
-			break;
-		for (int i = 1; i <= 8; i++)
-		{
-			BookData book;
-			try
-			{
-				book.SetName(ws.cell(1,row).to_string().c_str());//ÉèÖÃÊéÃû
-				book.SetISBN(ws.cell(2, row).to_string().c_str());
-				book.SetAuthor(ws.cell(3, row).to_string().c_str());
-				book.SetPub(ws.cell(4, row).to_string().c_str());//ÉèÖÃ³ö°æÉç
-				book.SetDateAdded(ws.cell(5, row).to_string().c_str());//ÉèÖÃ½ø»õÈÕÆÚ
-				book.SetQty(my_atoi(ws.cell(6, row).to_string().c_str()));//ÉèÖÃ¿â´æ
-				book.SetRetail(my_atof(ws.cell(7, row).to_string().c_str()));//ÉèÖÃÁãÊÛ¼Û
-				book.SetWholesale(my_atof(ws.cell(8, row).to_string().c_str()));//ÉèÖÃÅú·¢¼Û
-				
-			}
-			catch (const char* err)//Èç¹ûÊäÈëµÄÊý¾ÝÓÐÎÊÌâ
-			{
-				fail++;
-				break;
-			}
-			BookOpe::Result result = BookOpe::Insert(book);
-			if (result == BookOpe::Result::Success)
-			{
-				success++;
-			}
-			else if (result == BookOpe::Result::Exist)
-			{
-				fail++;
-				break;
-			}
-			else if (result == BookOpe::Result::Fail)
-			{
-				fail++;
-				break;
-			}
-		}
 
+	void ImportFromFile(ifstream &file);
+	//å®šä¹‰æ–‡ä»¶å¯¹è¯æ¡†ç±»
+	QString file_name = QFileDialog::getOpenFileName(this,
+		u8"æ‰“å¼€æ–‡ä»¶",
+		".",
+		u8"CSVæ–‡ä»¶(*.csv)");
+	if (file_name.isNull())
+	{
+		return;
+	}
+	ifstream file(file_name.toStdString().c_str());
+	if (!file.is_open())
+	{
+		QMessageBox box(QMessageBox::Critical, u8"é”™è¯¯", u8"æ‰“å¼€æ–‡ä»¶å¤±è´¥!");
+		box.exec();
+		return;
+	}
+	ImportFromFile(file);
+	file.close();
+	
+	
+}
+string* Divide(char* line)//å°†lineç”¨é€—å·åˆ†å‰²ä¸º8ä¸ªå­—ç¬¦ä¸²
+{
+	string *divide=new string [8];
+	char temp_str[1000];
+	int temp_str_length = 0,divide_num=0;
+	for (int i = 0; i <= strlen(line)&& divide_num<=7; i++)
+	{
+		if (line[i] == ',')//æ£€æµ‹é€—å·
+		{
+			temp_str[temp_str_length] = '\0';
+			divide[divide_num++] = temp_str;
+			temp_str_length = 0;
+		}
+		else
+		{
+			temp_str[temp_str_length++] = line[i];
+		}
+	}
+	temp_str[temp_str_length] = '\0';
+	if (temp_str_length <= 7)//é˜²æ­¢æ•°æ®ä¸­é€—å·å¤šä½™7ä¸ªé€ æˆå´©æºƒ
+	{
+		divide[divide_num] = temp_str;
+	}
+	return divide;
+}
+void ImportFromFile(ifstream &file)
+{
+	char line[10000];
+	file.getline(line,10000);
+	file.getline(line,10000);
+	int success = 0, fail = 0;
+	while (!file.eof())
+	{
+		file.getline(line, 10000);
+		if (file.fail())
+			break;
+		BookData book;
+		try
+		{
+
+			string *divide = Divide(line);
+			book.SetName(divide[0].c_str());
+			book.SetISBN(divide[1].c_str());
+			book.SetAuthor(divide[2].c_str());
+			book.SetPub(divide[3].c_str());
+			book.SetDateAdded(divide[4].c_str());
+			book.SetQty(my_atoi(divide[5].c_str()));
+			book.SetRetail(my_atof(divide[6].c_str()));
+			book.SetWholesale (my_atof(divide[7].c_str()));
+			delete [] divide;
+		}
+		catch (const char* err)//å¦‚æžœè¾“å…¥çš„æ•°æ®æœ‰é—®é¢˜
+		{
+			fail++;
+			cout << err;
+			continue;
+		}
+		BookOpe::Result result = BookOpe::Insert(book);
+		if (result == BookOpe::Result::Success)
+		{
+			success++;
+		}
+		else
+		{
+			fail++;
+		}
 		
 	}
-	string message = "¹²ÕÒµ½" + to_string(row - 3) + "ÌõÊý¾Ý,³É¹¦" + to_string(success) + "Ìõ,Ê§°Ü" + to_string(fail) + "Ìõ";
-	QMessageBox box(QMessageBox::Information, "ÌáÊ¾", QString::fromStdString(message));
+	QMessageBox box(QMessageBox::Information, QString(u8"æç¤º"), u8"å…±æ‰¾åˆ°" + QString::number(success + fail) + u8"æœ¬ä¹¦,æˆåŠŸ" + QString::number(success) + u8"æœ¬ï¼Œå¤±è´¥" + QString::number(fail) + u8"æœ¬.");
 	box.exec();
-
 }
 void MainWindow::on_ActionExportExcel_triggered()
 {
-	
 	string GetDateTime();
-	xlnt::workbook wb;
-	xlnt::worksheet ws = wb.active_sheet();
-	ws.merge_cells("A1:H1");
-	xlnt::alignment center;
-	center.horizontal(xlnt::horizontal_alignment::center);
-	ws.cell(1, 1).alignment(center);
-	ws.cell(1, 1).value(string("Êé¿â¹ÜÀíÏµÍ³µ¼³ö ") + GetDateTime());
-	ws.cell(1,2).value("ÊéÃû");
-	ws.cell(2,2).value("ISBN");
-	ws.cell(3,2).value("×÷Õß");
-	ws.cell(4,2).value("³ö°æÉç");
-	ws.cell(5,2).value("½ø»õÈÕÆÚ");
-	ws.cell(6,2).value("¿â´æ");
-	ws.cell(7,2).value("ÁãÊÛ¼Û");
-	ws.cell(8,2).value("Åú·¢¼Û");
-	QString sql = "SELECT name,isbn,author,publisher,date_added,qty,retail,wholesale FROM books";
+	ofstream file;
+	QString file_name = QFileDialog::getSaveFileName(this, u8"å¯¼å‡ºä¸ºCSV", "./books", u8"CSVæ–‡ä»¶ (*.csv)");
+	if (file_name.isNull())
+	{
+		return;
+	}
+	QByteArray file_name_bytes = file_name.toLocal8Bit();//é˜²æ­¢ä¸­æ–‡ä¹±ç 
+	file.open(file_name_bytes.data());
+	if (!file.is_open())//ä¿å­˜
+	{
+		QMessageBox box(QMessageBox::Critical, u8"é”™è¯¯", u8"æ‰“å¼€æ–‡ä»¶å¤±è´¥!");
+		box.exec();
+		return;
+	}
+	file << "ä¹¦åº“ç®¡ç†ç³»ç»Ÿ" << GetDateTime() << "å¯¼å‡º" << endl;
+	file << "ä¹¦å," << "ISBN," << "ä½œè€…," << "å‡ºç‰ˆç¤¾," << "è¿›è´§æ—¥æœŸ," << "åº“å­˜," << "é›¶å”®ä»·," << "æ‰¹å‘ä»·" << endl;
+	QString sql = "SELECT name,isbn,author,publisher,date_added,qty,retail,wholesale from books;";
 	QSqlQuery query;
 	query.exec(sql);
-	int row = 3;
 	while (query.next())
 	{
-		ws.cell(1, row).value(query.value(0).toString().toStdString());
-		ws.cell(2, row).value(query.value(1).toString().toStdString());
-		ws.cell(3, row).value(query.value(2).toString().toStdString());
-		ws.cell(4, row).value(query.value(3).toString().toStdString());
-		ws.cell(5, row).value(query.value(4).toString().toStdString());
-		ws.cell(6, row).value(query.value(5).toInt());
-		ws.cell(7, row).value(query.value(6).toDouble());
-		ws.cell(8, row).value(query.value(7).toDouble());
-		row++;
+		for (int i = 0; i <= 7; i++)
+		{
+			file << query.value(i).toString().toLocal8Bit().data();
+			if (i != 7)
+			{
+				file << ",";
+			}
+		}
+		file << endl;
 	}
-	QString file_path = QFileDialog::getSaveFileName(this, "±£´æÎÄ¼þ", "../books", "EXCELÎÄ¼þ(*.xlsx)");
-	if (!file_path.isEmpty())
-	{
-		wb.save(file_path.toStdString());
-		QMessageBox box(QMessageBox::Information, "ÌáÊ¾", "µ¼³ö³É¹¦£¡");
-		box.exec();
-	}
-	
+	file.close();
+
+	QMessageBox box(QMessageBox::Information, u8"æç¤º", u8"ä¿å­˜æˆåŠŸ!");
+	box.exec();
 }
 string GetDateTime()
 {

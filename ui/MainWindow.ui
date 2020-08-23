@@ -188,12 +188,12 @@
   </action>
   <action name="ActionImportExcel">
    <property name="text">
-    <string>从EXCEL文件导入到书库</string>
+    <string>从CSV文件导入到书库</string>
    </property>
   </action>
   <action name="ActionExportExcel">
    <property name="text">
-    <string>导出当前书库到EXCEL</string>
+    <string>导出当前书库到CSV</string>
    </property>
   </action>
  </widget>
