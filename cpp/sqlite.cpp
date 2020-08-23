@@ -126,7 +126,6 @@ BookOpe::Result BookOpe::Insert(BookData& book)
 	query.bindValue(":wholesale", book.GetWholesale());
 	string name_pinyin;
 	ChineseConvertPy(book.GetName(), name_pinyin);
-	cout << name_pinyin;
 	query.bindValue(":name_pinyin", name_pinyin.data());
 	if (query.exec())
 		return Result::Success;

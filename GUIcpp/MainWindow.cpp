@@ -175,35 +175,76 @@ void MainWindow::on_ActionImportExcel_triggered()
 	
 	
 }
+string* Divide(char* line)//将line用逗号分割为8个字符串
+{
+	string *divide=new string [8];
+	char temp_str[1000];
+	int temp_str_length = 0,divide_num=0;
+	for (int i = 0; i <= strlen(line)&& divide_num<=7; i++)
+	{
+		if (line[i] == ',')//检测逗号
+		{
+			temp_str[temp_str_length] = '\0';
+			divide[divide_num++] = temp_str;
+			temp_str_length = 0;
+		}
+		else
+		{
+			temp_str[temp_str_length++] = line[i];
+		}
+	}
+	temp_str[temp_str_length] = '\0';
+	if (temp_str_length <= 7)//防止数据中逗号多余7个造成崩溃
+	{
+		divide[divide_num] = temp_str;
+	}
+	return divide;
+}
 void ImportFromFile(ifstream &file)
 {
-	//TODO:未实现的函数
-	char str[10000];
-	file.getline(str,10000);
-	file.getline(str,10000);
+	char line[10000];
+	file.getline(line,10000);
+	file.getline(line,10000);
+	int success = 0, fail = 0;
 	while (!file.eof())
 	{
-		file.getline(str, 10000);
+		file.getline(line, 10000);
 		if (file.fail())
 			break;
-		string line = str;
-		string divide;
-		int n = line.size();
-		for (int i = 0; i < n; ++i) {
-			if (line[i] == ',') {
-				line[i] = ' ';
-			}
+		BookData book;
+		try
+		{
+
+			string *divide = Divide(line);
+			book.SetName(divide[0].c_str());
+			book.SetISBN(divide[1].c_str());
+			book.SetAuthor(divide[2].c_str());
+			book.SetPub(divide[3].c_str());
+			book.SetDateAdded(divide[4].c_str());
+			book.SetQty(my_atoi(divide[5].c_str()));
+			book.SetRetail(my_atof(divide[6].c_str()));
+			book.SetWholesale (my_atof(divide[7].c_str()));
+			delete [] divide;
 		}
-		istringstream out(line);
-		out >> divide;
-		cout << divide<<endl;
-		out >> divide;
-		cout << divide << endl;
-		out >> divide;
-		cout << divide << endl;
-		out >> divide;
-		cout << divide << endl;
+		catch (const char* err)//如果输入的数据有问题
+		{
+			fail++;
+			cout << err;
+			continue;
+		}
+		BookOpe::Result result = BookOpe::Insert(book);
+		if (result == BookOpe::Result::Success)
+		{
+			success++;
+		}
+		else
+		{
+			fail++;
+		}
+		
 	}
+	QMessageBox box(QMessageBox::Information, QString(u8"提示"), u8"共找到" + QString::number(success + fail) + u8"本书,成功" + QString::number(success) + u8"本，失败" + QString::number(fail) + u8"本.");
+	box.exec();
 }
 void MainWindow::on_ActionExportExcel_triggered()
 {
