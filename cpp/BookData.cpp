@@ -42,7 +42,3 @@ int BookData::GetQty()const
 {
 	return _qty;
 }
-bool BookData::operator<(const BookData &rhs)const 
-{
-	return strcmp(_isbn, rhs.GetISBN())<0;
-}

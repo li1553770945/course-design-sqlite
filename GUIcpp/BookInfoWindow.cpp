@@ -9,7 +9,7 @@ BookInfoWindow::BookInfoWindow(QWidget* parent)
 }
 void BookInfoWindow::ReceiveBook(QSqlRecord record)
 {
-	ui.Name->setText(record.value("name").toString());
+	ui.Name->setText(record.value("name").toString());//在收到书的信息后，显示出来
 	ui.ISBN->setText(record.value("isbn").toString());
 	ui.Author->setText(record.value("author").toString());
 	ui.Publisher->setText(record.value("publisher").toString());

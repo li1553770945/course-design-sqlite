@@ -5,7 +5,7 @@
 #include <qdebug.h>
 #include <Windows.h>
 int my_atoi(const char* const& str)
-{
+{ 
 	if (strlen(str) == 0)
 		return -1;
 	int ans = 0;

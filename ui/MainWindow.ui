@@ -146,7 +146,21 @@
     </property>
     <addaction name="ActionAbout"/>
    </widget>
+   <widget class="QMenu" name="menu_F">
+    <property name="title">
+     <string>文件(&amp;F)</string>
+    </property>
+    <widget class="QMenu" name="menu_E">
+     <property name="title">
+      <string>导入\导出(&amp;E)</string>
+     </property>
+     <addaction name="ActionImportExcel"/>
+     <addaction name="ActionExportExcel"/>
+    </widget>
+    <addaction name="menu_E"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menu_F"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -170,6 +184,16 @@
   <action name="ActionSave">
    <property name="text">
     <string>保存(&amp;S)</string>
+   </property>
+  </action>
+  <action name="ActionImportExcel">
+   <property name="text">
+    <string>从CSV文件导入到书库</string>
+   </property>
+  </action>
+  <action name="ActionExportExcel">
+   <property name="text">
+    <string>导出当前书库到CSV</string>
    </property>
   </action>
  </widget>
