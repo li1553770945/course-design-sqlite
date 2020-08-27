@@ -123,7 +123,7 @@
          </size>
         </property>
         <property name="text">
-         <string>保存退出</string>
+         <string>退出</string>
         </property>
        </widget>
       </item>
@@ -159,8 +159,8 @@
     </widget>
     <addaction name="menu_E"/>
    </widget>
-   <addaction name="menu"/>
    <addaction name="menu_F"/>
+   <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
