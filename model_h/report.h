@@ -7,6 +7,6 @@ class ReportModel :public QSqlQueryModel
 {
 public:
 	ReportModel(QObject *parent);//使得数据能够居中
-	QVariant data(const QModelIndex& index, int role) const;//构造函数
+	QVariant data(const QModelIndex& index, int role) const;
 	void SetHeader();//设置表头
 };

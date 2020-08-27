@@ -67,7 +67,7 @@ void ReportWindow::SetData()
 	if (ui.RadioQty->isChecked())
 		order += " qty";
 	if (ui.RadioRetail->isChecked())
-		order += " retaill";
+		order += " retail";
 	if (ui.RadioWholesale->isChecked())
 		order += " wholesale";
 	if (ui.RadioPositive->isChecked())
