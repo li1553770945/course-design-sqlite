@@ -79,7 +79,7 @@ void ManageWindow::on_ButtonISBNConfirm_clicked()
 		ui.AuthorEdit->setText(record.value("author").toString());
 		ui.QtyEdit->setText(record.value("qty").toString());
 		ui.RetailEdit->setText(QString::number(record.value("retail").toDouble(), 10, 2));
-		ui.WholesaleEdit->setText(QString::number(record.value("retail").toDouble(), 10, 2));
+		ui.WholesaleEdit->setText(QString::number(record.value("wholesale").toDouble(), 10, 2));
 		ui.DateAddedEdit->setDate(QDate::fromString(record.value("date_added").toString(), "yyyy-MM-dd"));
 	}
 }
